@@ -88,10 +88,10 @@ function init() {
     container.appendChild(renderer.domElement);
 
 
-    stats = new Stats();
-    stats.domElement.style.position = 'absolute';
-    stats.domElement.style.top = '50px';
-    container.appendChild(stats.domElement);
+    //stats = new Stats();
+    //stats.domElement.style.position = 'absolute';
+    //stats.domElement.style.top = '50px';
+    //container.appendChild(stats.domElement);
 
     //var gridHelper1 = new THREE.GridHelper(2000, 500);
     //scene.add(gridHelper1);
@@ -255,7 +255,7 @@ document.onkeypress = function (e) {
 
 function animate() {
 
-    stats.update();
+    //stats.update();
     controls.update();
     slider.update();
 

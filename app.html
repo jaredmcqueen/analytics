@@ -34,8 +34,7 @@
     <!--vendor includes-->
     <script src="lib/jquery.min.js"></script>
     <script src="lib/ion.rangeSlider.min.js"></script>
-    <script src="lib/three-r72.js"></script>
-    <!--<script src="lib/three.js"></script>-->
+    <script src="lib/three.js"></script>
     <script src="lib/stats.min.js"></script>
     <script src="lib/dat.gui.min.js"></script>
     <script src="lib/OrbitControls.js"></script>
@@ -94,37 +93,33 @@
 
 </div>
 
-<div>
-    <input type="file" id="csv-file" name="files"/>
-</div>
-
 <script>
 
-
     $(document).ready(function () {
-        $("#csv-file").change(handleFileSelect);
-    });
 
-    function handleFileSelect(evt) {
-        var file = evt.target.files[0];
+        var csvfile = "examples/output.csv";
 
-        Papa.parse(file, {
-            header: true,
-            dynamicTyping: true,
-            delimeter: ',',
-            quotes: true,
-            complete: function (results) {
-                console.log(results);
-                for (var i = 0; i < results.data.length; i++) {
-                    g.addCSVRow(results.data[i]);
+        $.get(csvfile, function (file) {
+
+            Papa.parse(file, {
+                header: true,
+                dynamicTyping: true,
+                delimeter: ',',
+                quotes: true,
+                complete: function (results) {
+                    console.log(results);
+                    for (var i = 0; i < results.data.length; i++) {
+                        g.addCSVRow(results.data[i]);
+                    }
+
+                    initNodes();
+                    simulate = true;
                 }
+            });
 
-                initNodes();
-                simulate = true;
-            }
         });
-    }
 
+    });
 
 </script>
 </body>

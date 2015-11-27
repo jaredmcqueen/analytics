@@ -1,6 +1,6 @@
-function generatePositionTexture(inputArray, textureSize) {
+function generatePositionTexture(inputArray, textureSize, size) {
 
-    var bounds = 100;
+    var bounds = size;
     var bounds_half = bounds / 2;
 
     var textureArray = new Float32Array(textureSize * textureSize * 4);
@@ -17,6 +17,84 @@ function generatePositionTexture(inputArray, textureSize) {
             textureArray[i + 1] = y;
             textureArray[i + 2] = z;
             textureArray[i + 3] = 1.0;
+
+        } else {
+
+            // fill the remaining pixels with -1
+            textureArray[i] = -1.0;
+            textureArray[i + 1] = -1.0;
+            textureArray[i + 2] = -1.0;
+            textureArray[i + 3] = -1.0;
+
+        }
+
+    }
+
+    var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
+    texture.needsUpdate = true;
+    //console.log('position', texture.image.data);
+    return texture;
+
+}
+
+
+function generateCircularLayout(inputArray, textureSize) {
+
+    var increase = Math.PI * 2 / inputArray.length;
+    var angle = 0;
+    var radius = inputArray.length * 4;
+
+    var textureArray = new Float32Array(textureSize * textureSize * 4);
+
+    for (var i = 0; i < textureArray.length; i += 4) {
+
+        if (i < inputArray.length * 4) {
+
+
+            // modify to change the radius and position of a circle
+            var x = radius * Math.cos(angle);
+            var y = radius * Math.sin(angle);
+            var z = 0;
+            var w = 1.0;
+
+            textureArray[i] = x;
+            textureArray[i + 1] = y;
+            textureArray[i + 2] = z;
+            textureArray[i + 3] = w;
+
+            angle += increase;
+
+        } else {
+
+            textureArray[i] = -1.0;
+            textureArray[i + 1] = -1.0;
+            textureArray[i + 2] = -1.0;
+            textureArray[i + 3] = -1.0;
+
+        }
+
+    }
+
+    var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
+    texture.needsUpdate = true;
+    //console.log('position', texture.image.data);
+    return texture;
+
+}
+
+
+function generateZeroedPositionTexture(inputArray, textureSize) {
+
+    var textureArray = new Float32Array(textureSize * textureSize * 4);
+
+    for (var i = 0; i < textureArray.length; i += 4) {
+
+        if (i < inputArray.length * 4) {
+
+            textureArray[i] = 0.0;
+            textureArray[i + 1] = 0.0;
+            textureArray[i + 2] = 0.0;
+            textureArray[i + 3] = 0.0;
 
         } else {
 
@@ -181,7 +259,7 @@ function generateDataTexture(inputArray, textureSize) {
 
     for (var i = currentIndex; i < textureArray.length; i++) {
 
-         //fill unused RGBA slots with -1
+        //fill unused RGBA slots with -1
         textureArray[i] = -1;
 
     }

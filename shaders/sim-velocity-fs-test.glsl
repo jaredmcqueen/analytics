@@ -1,9 +1,8 @@
-attribute vec3 posLayout;
-
 uniform float delta;
 uniform float k;
 uniform float temperature;
 uniform sampler2D positions;
+uniform sampler2D layoutPositions;
 uniform sampler2D velocities;
 uniform sampler2D edgeIndices;
 uniform sampler2D edgeData;

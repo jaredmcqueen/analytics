@@ -2,6 +2,7 @@ uniform float delta;
 uniform float k;
 uniform float temperature;
 uniform sampler2D positions;
+uniform sampler2D layoutPositions;
 uniform sampler2D velocities;
 uniform sampler2D edgeIndices;
 uniform sampler2D edgeData;
@@ -35,34 +36,106 @@ vec3 addAttraction(vec3 self, vec3 neighbor){
 void main()	{
 
     vec2 nodeRef = vec2(nodesTexWidth, nodesTexWidth);
-    vec2 edgeRef = vec2(edgesTexWidth, edgesTexWidth);
     vec2 uv = gl_FragCoord.xy / nodeRef.xy;
-
     vec4 selfPosition = texture2D( positions, uv );
+    vec4 selfLayoutPosition = texture2D( layoutPositions, uv );
     vec3 selfVelocity = texture2D( velocities, uv ).xyz;
-    vec4 selfEdgeIndices = texture2D( edgeIndices, uv);
-
-//    vec3 velocity = vec3(0.0);
     vec3 velocity = selfVelocity;
 
     vec3 nodePosition;
     vec4 compareNodePosition;
 
 
-    if( selfPosition.w > 0.0 ){
-        for(float y = 0.0; y < nodesTexWidth; y++){
-            for(float x = 0.0; x < nodesTexWidth; x++){
+    if ( selfLayoutPosition.w > 0.0 ) {
 
-                vec2 ref = vec2(x + 0.5, y + 0.5 ) / nodeRef;
-                compareNodePosition = texture2D(positions,ref);
+        // node needs to move towards destination.
 
-                // note: double ifs work.  using continues do not work for all GPUs.
+        if ( selfPosition.w > 0.0 ) {
 
-                if (distance(compareNodePosition.xyz, selfPosition.xyz) > 0.001) {
+            compareNodePosition = selfLayoutPosition;
 
-                    if (compareNodePosition.w != -1.0) {
+            if (distance(compareNodePosition.xyz, selfPosition.xyz) > 0.001) {
 
-                        velocity += addRepulsion(selfPosition.xyz, compareNodePosition.xyz);
+                velocity -= addAttraction(selfPosition.xyz, compareNodePosition.xyz);
+
+            }
+
+        }
+
+        velocity *= 0.75;
+
+    } else {
+
+        // force-directed n-body simulation
+
+        vec4 selfEdgeIndices = texture2D( edgeIndices, uv);
+
+        if( selfPosition.w > 0.0 ){
+            for(float y = 0.0; y < nodesTexWidth; y++){
+                for(float x = 0.0; x < nodesTexWidth; x++){
+
+                    vec2 ref = vec2(x + 0.5, y + 0.5 ) / nodeRef;
+                    compareNodePosition = texture2D(positions,ref);
+
+                    // note: double ifs work.  using continues do not work for all GPUs.
+
+                    if (distance(compareNodePosition.xyz, selfPosition.xyz) > 0.001) {
+
+                        if (compareNodePosition.w != -1.0) {
+
+                            velocity += addRepulsion(selfPosition.xyz, compareNodePosition.xyz);
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+            float idx = selfEdgeIndices.x;
+            float idy = selfEdgeIndices.y;
+            float idz = selfEdgeIndices.z;
+            float idw = selfEdgeIndices.w;
+
+            float start = idx * 4.0 + idy;
+            float end = idz * 4.0 + idw;
+
+
+            if(! ( idx == idz && idy == idw ) ){
+
+                float edgeIndex = 0.0;
+                vec2 edgeRef = vec2(edgesTexWidth, edgesTexWidth);
+
+                for(float y = 0.0; y < edgesTexWidth; y++){
+                    for(float x = 0.0; x < edgesTexWidth; x++){
+
+                        vec2 ref = vec2( x + 0.5 , y + 0.5 ) / edgeRef;
+                        vec4 pixel = texture2D(edgeData, ref);
+
+                        if (edgeIndex >= start && edgeIndex < end){
+                            nodePosition = getNeighbor(pixel.x);
+                            velocity -= addAttraction(selfPosition.xyz, nodePosition);
+                        }
+                        edgeIndex++;
+
+                        if (edgeIndex >= start && edgeIndex < end){
+                            nodePosition = getNeighbor(pixel.y);
+                            velocity -= addAttraction(selfPosition.xyz, nodePosition);
+                        }
+                        edgeIndex++;
+
+                        if (edgeIndex >= start && edgeIndex < end){
+                            nodePosition = getNeighbor(pixel.z);
+                            velocity -= addAttraction(selfPosition.xyz, nodePosition);
+                        }
+                        edgeIndex++;
+
+                        if (edgeIndex >= start && edgeIndex < end){
+                            nodePosition = getNeighbor(pixel.w);
+                            velocity -= addAttraction(selfPosition.xyz, nodePosition);
+                        }
+                        edgeIndex++;
 
                     }
 
@@ -72,66 +145,15 @@ void main()	{
 
         }
 
-        float idx = selfEdgeIndices.x;
-        float idy = selfEdgeIndices.y;
-        float idz = selfEdgeIndices.z;
-        float idw = selfEdgeIndices.w;
 
-        float start = idx * 4.0 + idy;
-        float end = idz * 4.0 + idw;
+        // temperature gradually cools down to zero
 
-
-        if(! ( idx == idz && idy == idw ) ){
-
-            float edgeIndex = 0.0;
-
-            for(float y = 0.0; y < edgesTexWidth; y++){
-                for(float x = 0.0; x < edgesTexWidth; x++){
-
-                    vec2 ref = vec2( x + 0.5 , y + 0.5 ) / edgeRef;
-                    vec4 pixel = texture2D(edgeData, ref);
-
-                    if (edgeIndex >= start && edgeIndex < end){
-                        nodePosition = getNeighbor(pixel.x);
-                        velocity -= addAttraction(selfPosition.xyz, nodePosition);
-                    }
-                    edgeIndex++;
-
-                    if (edgeIndex >= start && edgeIndex < end){
-                        nodePosition = getNeighbor(pixel.y);
-                        velocity -= addAttraction(selfPosition.xyz, nodePosition);
-                    }
-                    edgeIndex++;
-
-                    if (edgeIndex >= start && edgeIndex < end){
-                        nodePosition = getNeighbor(pixel.z);
-                        velocity -= addAttraction(selfPosition.xyz, nodePosition);
-                    }
-                    edgeIndex++;
-
-                    if (edgeIndex >= start && edgeIndex < end){
-                        nodePosition = getNeighbor(pixel.w);
-                        velocity -= addAttraction(selfPosition.xyz, nodePosition);
-                    }
-                    edgeIndex++;
-
-                }
-            }
-
-        }
+        velocity = normalize(velocity) * temperature;
+        velocity *= 0.35;
 
     }
 
-
-    // temperature gradually cools down to zero
-
-    velocity = normalize(velocity) * temperature;
-//    velocity -= temperature * 0.05;
-//    newVelocity -= normalize(velocity) * 5.0;
-
-
     // add friction
-    velocity *= 0.25;
 
     gl_FragColor = vec4(velocity, 1.0);
 

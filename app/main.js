@@ -7,7 +7,7 @@ var mouse = new THREE.Vector2();
 var temperature = 100;
 var lastPickedNode = {};
 var last = performance.now();
-var simulator;
+var simulator, interface;
 var pickingTexture, pickingScene;
 var k = 0;
 var shaders;
@@ -169,26 +169,29 @@ function initNodes() {
     simulator = new Simulator(renderer);
     simulator.init();
 
-
-    var gui = new dat.GUI();
-//        gui.close();
-
-
-    var effectController = {
-        k: 10
-    };
+    interface = new Interface(simulator);
+    interface.init();
 
 
-    var valuesChanger = function () {
-
-        simulator.velocityUniforms.k.value = 100;
-        //if (temperature < 200) temperature = 200;
-
-    };
-
-    valuesChanger();
-
-    gui.add(effectController, "k", 1, 10000).onChange(valuesChanger);
+//    var gui = new dat.GUI();
+////        gui.close();
+//
+//
+//    var effectController = {
+//        k: 10
+//    };
+//
+//
+//    var valuesChanger = function () {
+//
+//        simulator.velocityUniforms.k.value = 100;
+//        //if (temperature < 200) temperature = 200;
+//
+//    };
+//
+//    valuesChanger();
+//
+//    gui.add(effectController, "k", 1, 10000).onChange(valuesChanger);
 
 
     graphStructure = new THREE.Object3D();
@@ -392,7 +395,7 @@ function render() {
         nodeUniforms.nodeAttribTexture.value = simulator.nodeAttribUniforms.nodeAttrib.value;
         edgeUniforms.nodeAttribTexture.value = simulator.nodeAttribUniforms.nodeAttrib.value;
         labelUniforms.nodeAttribTexture.value = simulator.nodeAttribUniforms.nodeAttrib.value;
-        //graphStructure.rotation.y += 0.0025;
+        graphStructure.rotation.y += 0.0025;
     }
 
     if (nodeGeometry) pick();

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="lib/underscore-min.js"></script>
+    <script src="lib/papaparse.min.js"></script>
+    <script src="app/graph.js"></script>
+    <!--<script src="jared_test.js"></script>-->
+    <!--<script src="app/createVizGraph.js"></script>-->
+    <!--<script src="examples/example_data.js"></script>-->
+
+    <!--bootstrap-->
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/bootstrap.min.js"></script>
+
+    <!--<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">-->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>-->
+    <!--<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>-->
+
+    <style>
+
+        .table {
+            font-size: 10px;
+        }
+
+        .setWidth {
+            max-width: 100px;
+        }
+
+        .concat div {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width: inherit;
+        }
+
+        .table-responsive {
+            padding-top: 20px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+
+<div class="container">
+    <!-- Trigger the modal with a button -->
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">add some data
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Let's visualize some data</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" role="form" id="myform">
+                        <div id="step1">
+                            <h4>Step 1: upload a CSV file</h4>
+
+                            <p>data is uploaded locally, no information is sent to our servers</p>
+
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label">Upload</label>
+
+                                <div class="col-sm-10">
+                                    <input type="file" id="csv-file" name="files"/>
+                                </div>
+                            </div>
+                            <div id="resultsTable" class="table-responsive" style="display: none;">
+                                <table class="table table-bordered table-condensed" id="my-table">
+                                    <thead>
+                                    <tr></tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--<div id="step2">-->
+                        <div id="step2" style="display: none;">
+                            <h4>Step 2: select colums</h4>
+
+                            <p>type in the column names you want to graph</p>
+
+                            <div class="form-group has-feedback">
+                                <label class="col-sm-2 control-label">Epoch</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="formEpoch" name="epoch">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label class="col-sm-2 control-label">Source</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="formSource" name="source">
+                                    <span></span>
+                                </div>
+                            </div>
+                            <div class="form-group has-feedback">
+                                <label class="col-sm-2 control-label">Target</label>
+
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="formTarget" name="target">
+                                    <span></span>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default btn-block disabled" type="submit" id="submitButton" form="myform">
+                        visualize data!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    var mydata;
+    var headers = [];
+    var mygraph;
+
+    function checkValid(inputs) {
+        var counter = 0;
+        for (var i = 0; i < inputs.length; i++) {
+
+            if ($(inputs[i]).hasClass('glyphicon')) counter++;
+
+        }
+
+        if (counter == 3) {
+            $('#submitButton').removeClass('disabled').addClass('active');
+            $('#submitButton').removeClass('btn-default').addClass('btn-success');
+        } else {
+            $('#submitButton').removeClass('active').addClass('disabled');
+            $('#submitButton').removeClass('btn-success').addClass('btn-default');
+        }
+
+    }
+
+
+    function showCSVPreview(results) {
+
+        $.each(results.meta.fields, function (i, item) {
+
+            $('#my-table > thead > tr:last').append('<th class="col-sm-8 text-nowrap">' + item + '</th>');
+            headers.push(item);
+
+        });
+
+        $.each(results.data, function (di, ditem) {
+
+            if (di < 10) {
+
+                $('#my-table > tbody').append('<tr></tr>');
+                $.each(headers, function (hi, hitem) {
+
+                    $('#my-table > tbody > tr:last').append('<td class="setWidth concat"><div>' + ditem[hitem] + '<div></td>');
+
+                });
+
+            }
+
+        });
+
+    }
+
+
+    function handleFileSelect(evt) {
+        var file = evt.target.files[0];
+        Papa.parse(file, {
+            dynamicTyping: false,
+            delimeter: ',',
+            quotes: true,
+            header: true,
+//            preview: 10,
+            complete: function (results) {
+                mydata = results;
+                console.log(results);
+                showCSVPreview(results);
+//                // unhide step2
+                $('#resultsTable').slideDown(function () {
+
+                    $('#step2').slideDown();
+
+                });
+
+                $('.form-group').each(function () {
+//
+                    checkStuff($(this));
+//
+                });
+
+            }
+        });
+    }
+
+
+    function checkStuff(event) {
+
+        var input = $(event).find('input').val();
+        var idx = $.inArray(input, headers);
+//
+        if (idx >= 0) {
+
+            $(event).find('span').addClass('glyphicon glyphicon-ok form-control-feedback');
+            $(event).addClass('has-success');
+
+        } else {
+
+            $(event).find('span').removeClass('glyphicon glyphicon-ok form-control-feedback');
+            $(event).removeClass('has-success');
+
+        }
+
+        checkValid($('.form-group > div > span'));
+
+    }
+
+
+    $('#formEpoch').val('Event Time');
+    $('#formSource').val('sourceAddress');
+    $('#formTarget').val('destinationAddress');
+    $("#csv-file").change(handleFileSelect);
+
+
+    $('.form-group').on('input', function () {
+
+        checkStuff($(this));
+
+    });
+
+    $("form").submit(function (event) {
+
+        if ($('#submitButton').hasClass('active')) {
+
+            var values = {};
+
+            $.each($('#myform').serializeArray(), function (i, field) {
+                values[field.name] = field.value;
+            });
+
+
+            $('#myModal').modal('hide');
+
+            // create graph viz
+//            createVizGraph(values, mydata.data);
+            console.log(values);
+            mygraph = new Graph(values);
+            for (var i = 0; i < mydata.data.length; i++) {
+                mygraph.addCSVRow(mydata.data[i]);
+            }
+            console.log(mygraph);
+
+        }
+
+        event.preventDefault();
+
+    });
+
+    $('#myModal').modal('show');
+
+    //    var inputs = {epoch: "Event Time", source: "sourceAddress", target: "destinationAddress"};
+    //    createVizGraph(inputs, jaredData);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        a {
+            color: #0078ff;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <input type="file" id="csv-file" name="files"/>
+</div>
+<script src="lib/three.js"></script>
+<script src="lib/Projector.js"></script>
+<script src="lib/CanvasRenderer.js"></script>
+<script src="lib/OrbitControls.js"></script>
+<script src="lib/underscore-min.js"></script>
+<script src="lib/jquery.min.js"></script>
+<script src="lib/papaparse.min.js"></script>
+
+<script src="app/graph.js"></script>
+<script src="app/canvas_app.js"></script>
+
+<script>
+    var mygraph = new Graph();
+    $(document).ready(function () {
+        $("#csv-file").change(handleFileSelect);
+    });
+    function handleFileSelect(evt) {
+        var file = evt.target.files[0];
+        Papa.parse(file, {
+            header: true,
+            dynamicTyping: true,
+            delimeter: ',',
+            quotes: true,
+            complete: function (results) {
+                mygraph.buildGraph(results);
+                EDGES = mygraph.getEdges();
+                init();
+                initNodes();
+                animate();
+            }
+        });
+    }
+
+//    init();
+//    initNodes();
+//    animate();
+//    SIMULATE = true;
+
+
+</script>
+
+</body>
+</html>

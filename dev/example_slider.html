@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <style>
+        body {
+            background-color: #000000;
+            margin: 0px;
+            overflow: hidden;
+        }
+
+        a {
+            color: #0078ff;
+        }
+
+        #csv-file {
+            position: absolute;
+            left: 0px;
+            top: 0px;
+            z-index: 1;
+        }
+
+        #slider {
+
+            position: absolute;
+            left: 50%;
+            top: 80%;
+            width: 800px;
+            margin-left: -400px;
+            z-index: 1;
+        }
+    </style>
+
+
+    <!--vendor includes-->
+    <script src="lib/jquery.min.js"></script>
+    <script src="lib/ion.rangeSlider.min.js"></script>
+    <script src="lib/three.js"></script>
+    <script src="lib/stats.min.js"></script>
+    <script src="lib/dat.gui.min.js"></script>
+    <script src="lib/OrbitControls.js"></script>
+    <script src="lib/papaparse.min.js"></script>
+    <script src="lib/moment.js"></script>
+    <script src="lib/underscore-min.js"></script>
+    <script src="lib/ShaderLoader.js"></script>
+
+    <!--css imports-->
+    <link rel="stylesheet" href="lib/normalize.css"/>
+    <link rel="stylesheet" href="lib/ion.rangeSlider.css"/>
+    <link rel="stylesheet" href="lib/ion.rangeSlider.skinFlat.css"/>
+
+    <!--bootstrap-->
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+    <link rel="stylesheet" href="lib/bootstrap-theme.min.css">
+    <script src="lib/bootstrap.min.js"></script>
+
+
+
+    <!--force-direction includes-->
+    <script src="app/slider_new.js"></script>
+    <!--<script src="app/main.js"></script>-->
+
+
+</head>
+<body>
+<div id="slider">
+
+    <div>
+        <input type="text" id="range" value="" name="range">
+    </div>
+    <br/>
+
+    <div id="buttons" style="display: none;">
+
+        <button type="button" id="play" class="btn btn-primary">
+            <span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+        </button>
+
+        <button type="button" id="expand" class="btn btn-primary">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </button>
+
+        <button type="button" id="repeat" class="btn btn-primary">
+            <span class="glyphicon glyphicon-repeat text-muted" aria-hidden="true"></span>
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+    slider = new Slider();
+    slider.init();
+    slider.setLimits(0, 100);
+
+    animate();
+
+    function animate() {
+
+        slider.update();
+        requestAnimationFrame(animate);
+
+    }
+
+
+</script>
+</body>
+</html>

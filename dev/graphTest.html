@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<script src="../lib/jquery.min.js"></script>
+<script src="../lib/underscore-min.js"></script>
+<script src="../app/graph.js"></script>
+<script>
+    var myGraph = new Graph();
+
+//    myGraph.addNode('a', 'one');
+//    myGraph.addNode('b');
+//    myGraph.addNode('c', 'three');
+    myGraph.addEdge('a', 'b');
+    myGraph.addEdge('b', 'c', {epoch: 200});
+    myGraph.addEdge('b', 'a', {epoch: 300});
+    myGraph.addEdge('c', 'c', {epoch: 400});
+    myGraph.addEdge('c', null, {epoch: 500});
+
+
+
+    console.log(myGraph);
+</script>
+
+</body>
+</html>

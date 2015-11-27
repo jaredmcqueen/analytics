@@ -37,9 +37,10 @@ function Simulator(renderer) {
 
         uniforms: {
             delta: {type: "f", value: 0.0},
-            k: {type: "f", value: 0.0},
+            k: {type: "f", value: 100.0},
             temperature: {type: "f", value: 0.0},
             positions: {type: "t", value: null},
+            layoutPositions: {type: "t", value: null},
             velocities: {type: "t", value: null},
             edgeIndices: {type: "t", value: null},
             edgeData: {type: "t", value: null}
@@ -102,12 +103,13 @@ function Simulator(renderer) {
 
     function init() {
 
-        var dtPosition = generatePositionTexture(nodesAndEdges, nodesWidth);
+        var dtPosition = generatePositionTexture(nodesAndEdges, nodesWidth, 10);
         var dtVelocity = generateVelocityTexture(nodesAndEdges, nodesWidth);
         var dtNodeAttrib = generateNodeAttribTexture(nodesAndEdges, nodesWidth);
 
         velocityShader.uniforms.edgeIndices.value = generateIndiciesTexture(nodesAndEdges, nodesWidth);
         velocityShader.uniforms.edgeData.value = generateDataTexture(nodesAndEdges, edgesWidth);
+        velocityShader.uniforms.layoutPositions.value = generateZeroedPositionTexture(nodesAndEdges, edgesWidth);
 
         nodeAttribShader.uniforms.epochsIndices.value = generateIndiciesTexture(nodesAndEpochs, nodesWidth);
         nodeAttribShader.uniforms.epochsData.value = generateEpochDataTexture(nodesAndEpochs, epochsWidth);
@@ -174,12 +176,11 @@ function Simulator(renderer) {
     };
 
 
-    this.renderPosition = function (position, velocity, output, delta, temperature) {
+    this.renderPosition = function (position, velocity, output, delta) {
 
         mesh.material = positionShader;
         positionShader.uniforms.positions.value = position;
         positionShader.uniforms.velocities.value = velocity;
-        positionShader.uniforms.temperature.value = temperature;
         positionShader.uniforms.delta.value = delta;
         renderer.render(scene, camera, output);
 
@@ -205,7 +206,7 @@ function Simulator(renderer) {
             if (temperature > 0.1) {
 
                 simulator.renderVelocity(rtPosition1, rtVelocity1, rtVelocity2, delta, temperature);
-                simulator.renderPosition(rtPosition1, rtVelocity2, rtPosition2, delta, temperature);
+                simulator.renderPosition(rtPosition1, rtVelocity2, rtPosition2, delta);
 
             }
 
@@ -216,7 +217,7 @@ function Simulator(renderer) {
             if (temperature > 0.1) {
 
                 simulator.renderVelocity(rtPosition2, rtVelocity2, rtVelocity1, delta, temperature);
-                simulator.renderPosition(rtPosition2, rtVelocity1, rtPosition1, delta, temperature);
+                simulator.renderPosition(rtPosition2, rtVelocity1, rtPosition1, delta);
 
             }
 
@@ -225,6 +226,7 @@ function Simulator(renderer) {
         }
 
         //console.log(delta, temperature, epochMin, epochMax);
+        //console.log(layoutPositions);
 
         flipflop = !flipflop;
 

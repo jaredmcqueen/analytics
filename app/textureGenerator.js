@@ -42,7 +42,7 @@ function generateCircularLayout(inputArray, textureSize) {
 
     var increase = Math.PI * 2 / inputArray.length;
     var angle = 0;
-    var radius = inputArray.length * 4;
+    var radius = inputArray.length * 4 * 2;
 
     var textureArray = new Float32Array(textureSize * textureSize * 4);
 
@@ -78,6 +78,122 @@ function generateCircularLayout(inputArray, textureSize) {
     var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
     texture.needsUpdate = true;
     //console.log('position', texture.image.data);
+    return texture;
+
+}
+
+
+function generateSphericalLayout(inputArray, textureSize) {
+
+    //var increase = Math.PI * 2 / inputArray.length;
+    //var angle = 0;
+    var radius = inputArray.length * 4;
+
+    var textureArray = new Float32Array(textureSize * textureSize * 4);
+
+    for (var i = 0, l = inputArray.length; i < l; i++) {
+
+        var phi = Math.acos(-1 + ( 2 * i ) / l);
+        var theta = Math.sqrt(l * Math.PI) * phi;
+
+
+        // modify to change the radius and position of a circle
+        var x = radius * Math.cos(theta) * Math.sin(phi);
+        var y = radius * Math.sin(theta) * Math.sin(phi);
+        var z = radius * Math.cos(phi);
+        var w = 1.0;
+
+        textureArray[i * 4] = z;
+        textureArray[i * 4 + 1] = y;
+        textureArray[i * 4 + 2] = x;
+        textureArray[i * 4 + 3] = w;
+
+    }
+
+    for (var i = inputArray.length * 4; i < textureArray.length; i++) {
+
+        // fill unused RGBA slots with -1
+        textureArray[i] = -1;
+
+    }
+
+
+    var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
+    texture.needsUpdate = true;
+//console.log('position', texture.image.data);
+    return texture;
+
+}
+
+
+function generateHelixLayout(inputArray, textureSize) {
+
+    var textureArray = new Float32Array(textureSize * textureSize * 4);
+
+    for (var i = 0, l = inputArray.length; i < l; i++) {
+
+        var phi = i * 0.125 + Math.PI;
+
+
+        // modify to change the radius and position of a circle
+        var x = i * 15;
+        var y = 500 * Math.sin(phi);
+        var z = 500 * Math.cos(phi);
+        var w = 1.0;
+
+        textureArray[i * 4] = x;
+        textureArray[i * 4 + 1] = y;
+        textureArray[i * 4 + 2] = z;
+        textureArray[i * 4 + 3] = w;
+
+    }
+
+    for (var i = inputArray.length * 4; i < textureArray.length; i++) {
+
+        // fill unused RGBA slots with -1
+        textureArray[i] = -1;
+
+    }
+
+
+    var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
+    texture.needsUpdate = true;
+//console.log('position', texture.image.data);
+    return texture;
+
+}
+
+
+function generateGridLayout(inputArray, textureSize) {
+
+    var textureArray = new Float32Array(textureSize * textureSize * 4);
+
+    for (var i = 0; i < inputArray.length; i++) {
+
+        // modify to change the radius and position of a circle
+        var x = ( ( i % 5 ) * 500 ) - 1000;
+        var y = ( - ( Math.floor( i / 5 ) % 5 ) * 500 ) + 1000;
+        var z = ( Math.floor( i / 25 ) ) * 500 - 1000;
+        var w = 1.0;
+
+        textureArray[i * 4] = x;
+        textureArray[i * 4 + 1] = y;
+        textureArray[i * 4 + 2] = z;
+        textureArray[i * 4 + 3] = w;
+
+    }
+
+    for (var i = inputArray.length * 4; i < textureArray.length; i++) {
+
+        // fill unused RGBA slots with -1
+        textureArray[i] = -1;
+
+    }
+
+
+    var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
+    texture.needsUpdate = true;
+//console.log('position', texture.image.data);
     return texture;
 
 }

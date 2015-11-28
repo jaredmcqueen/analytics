@@ -4,7 +4,7 @@ var nodeMesh, nodeGeometry, nodeUniforms, labelUniforms;
 var simulate = false;
 var graphStructure;
 var mouse = new THREE.Vector2();
-var temperature = 100;
+var temperature = 0;
 var lastPickedNode = {};
 var last = performance.now();
 var simulator, interface;
@@ -62,7 +62,7 @@ function init() {
     container = document.createElement('div');
     document.body.appendChild(container);
 
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 100000);
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.00001, 100000);
     camera.position.x = 0;
     camera.position.y = 0;
     camera.position.z = 1500;
@@ -140,6 +140,8 @@ function initNodes() {
     console.log('epochsWidth', epochsWidth);
 
     edgesLookupTable = g.getLookupTable(); // needs to be after nodesWidth
+
+    temperature = nodesAndEdges.length / 2;
 
 
     // get the min and max values for epoch.
@@ -395,7 +397,7 @@ function render() {
         nodeUniforms.nodeAttribTexture.value = simulator.nodeAttribUniforms.nodeAttrib.value;
         edgeUniforms.nodeAttribTexture.value = simulator.nodeAttribUniforms.nodeAttrib.value;
         labelUniforms.nodeAttribTexture.value = simulator.nodeAttribUniforms.nodeAttrib.value;
-        graphStructure.rotation.y += 0.0025;
+        //graphStructure.rotation.y += 0.0025;
     }
 
     if (nodeGeometry) pick();

@@ -16,32 +16,81 @@ function Interface(simulator) {
 
     }
 
+    function enableSpherical() {
+
+        console.log('spherical');
+        simulator.velocityUniforms.layoutPositions.value = generateSphericalLayout(nodesAndEdges, nodesWidth);
+        temperature = 1000;
+
+    }
+
+
+    function enableHelix() {
+
+        console.log('helix');
+        simulator.velocityUniforms.layoutPositions.value = generateHelixLayout(nodesAndEdges, nodesWidth);
+        temperature = 1000;
+
+    }
+
+    function enableGrid() {
+
+        console.log('grid');
+        simulator.velocityUniforms.layoutPositions.value = generateGridLayout(nodesAndEdges, nodesWidth);
+        temperature = 1000;
+
+    }
+
 
     this.init = function () {
 
         var container = document.createElement('div');
         container.id = 'layouts';
 
-        var button1 = document.createElement('button');
-        button1.id = 'forceDirected';
-        $(button1).addClass("btn btn-primary");
-        $(button1).append("<span class='glyphicon glyphicon-heart-empty' aria-hidden='true'></span>");
+        var forceDirected = document.createElement('button');
+        forceDirected.id = 'forceDirected';
+        $(forceDirected).addClass("btn btn-primary");
+        $(forceDirected).append("<span class='glyphicon glyphicon-heart-empty' aria-hidden='true'></span>");
 
 
-        var button2 = document.createElement('button');
-        button2.id = 'circular';
-        $(button2).addClass("btn btn-primary");
-        $(button2).append("<span class='glyphicon glyphicon-asterisk' aria-hidden='true'></span>");
+        var circular = document.createElement('button');
+        circular.id = 'circular';
+        $(circular).addClass("btn btn-primary");
+        $(circular).append("<span class='glyphicon glyphicon-asterisk' aria-hidden='true'></span>");
+
+        var spherical = document.createElement('button');
+        spherical.id = 'spherical';
+        $(spherical).addClass("btn btn-primary");
+        $(spherical).append("<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>");
+
+        var helix = document.createElement('helix');
+        helix.id = 'helix';
+        $(helix).addClass("btn btn-primary");
+        $(helix).append("<span class='glyphicon glyphicon-leaf' aria-hidden='true'></span>");
+
+        var grid = document.createElement('grid');
+        grid.id = 'grid';
+        $(grid).addClass("btn btn-primary");
+        $(grid).append("<span class='glyphicon glyphicon-sunglasses' aria-hidden='true'></span>");
 
 
-        container.appendChild(button1);
+        container.appendChild(forceDirected);
         container.appendChild(document.createElement('br'));
-        container.appendChild(button2);
+        container.appendChild(circular);
+        container.appendChild(document.createElement('br'));
+        container.appendChild(spherical);
+        container.appendChild(document.createElement('br'));
+        container.appendChild(helix);
+        container.appendChild(document.createElement('br'));
+        container.appendChild(grid);
         document.body.appendChild(container);
 
 
         $('#forceDirected').on('click', enableForceDirected);
         $('#circular').on('click', enableCircular);
+        $('#spherical').on('click', enableSpherical);
+        $('#helix').on('click', enableHelix);
+        $('#grid').on('click', enableGrid);
     };
 
 

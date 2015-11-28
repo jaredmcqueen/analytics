@@ -20,7 +20,7 @@ vec3 addRepulsion(vec3 self, vec3 neighbor){
     vec3 diff = self - neighbor;
     float x = length( diff );
     float f = ( k * k ) / x;
-    return normalize(diff) * f * delta ;
+    return normalize(diff) * f ;
 }
 
 
@@ -29,11 +29,13 @@ vec3 addAttraction(vec3 self, vec3 neighbor){
     vec3 diff = self - neighbor;
     float x = length( diff );
     float f = ( x * x ) / k;
-    return normalize(diff) * f * delta;
+    return normalize(diff) * f;
 }
 
 
 void main()	{
+
+
 
     vec2 nodeRef = vec2(nodesTexWidth, nodesTexWidth);
     vec2 uv = gl_FragCoord.xy / nodeRef.xy;
@@ -44,6 +46,8 @@ void main()	{
 
     vec3 nodePosition;
     vec4 compareNodePosition;
+
+    float speedLimit = 250.0;
 
 
     if ( selfLayoutPosition.w > 0.0 ) {
@@ -149,9 +153,17 @@ void main()	{
         // temperature gradually cools down to zero
 
         velocity = normalize(velocity) * temperature;
-        velocity *= 0.35;
+
+
 
     }
+
+            // Speed Limits
+    if ( length( velocity ) > speedLimit ) {
+        velocity = normalize( velocity ) * speedLimit;
+    }
+
+    velocity *= 0.25;
 
     // add friction
 

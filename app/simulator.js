@@ -103,7 +103,7 @@ function Simulator(renderer) {
 
     function init() {
 
-        var dtPosition = generatePositionTexture(nodesAndEdges, nodesWidth, 10);
+        var dtPosition = generatePositionTexture(nodesAndEdges, nodesWidth, 1000);
         var dtVelocity = generateVelocityTexture(nodesAndEdges, nodesWidth);
         var dtNodeAttrib = generateNodeAttribTexture(nodesAndEdges, nodesWidth);
 

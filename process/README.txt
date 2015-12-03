@@ -2,8 +2,8 @@ Functionality:
 
 -Match threat intel to raw data sets and output one "enriched" csv output for visualization
 -Drop CSVs into "intel" directory
--Drop raw data into "../examples" directory in the proper format for visualization
--Retrieve output from "out" directory
+-Drop raw data into "raw" directory
+-Retrieve output from "../examples" directory in the proper format for visualization
 
 
 Data formats:

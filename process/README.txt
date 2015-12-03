@@ -7,8 +7,7 @@ Functionality:
 
 
 Data formats:
-
-    -Intel CSVs should have at least three columns:
+-Intel CSVs should have at least three columns:
         -Indicator: the IP, domain, email, etc.
         -Reference: where did you retrieve the threat intel
         -Type: Type of indicator (malware hosting, C2, spearphishing, whatever)
@@ -18,6 +17,5 @@ Data formats:
 
         epoch,source,target
 
-        *The raw format is static and needs to have these headers. Working on adding timestamp fixing and
-        formatting column headers.
+    *The raw format is static and needs to have these headers. Working on adding timestamp fixing and formatting column headers.
 

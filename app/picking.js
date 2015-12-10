@@ -22,7 +22,7 @@ function GPUPick() {
 			if (nodeClicked.down >= 0) {
 
 				selectedNode = nodeClicked.down;
-				console.log('you successfully selected', selectedNode);
+				console.log('you successfully selected', bigLookupTable[selectedNode]);
 				simulator.nodeAttribUniforms.selectedNode.value = selectedNode;
 				simulator.nodeAttribUniforms.hoverMode.value = 0;
 			}
@@ -36,8 +36,7 @@ function GPUPick() {
 
 	function hoverOver(id) {
 
-		console.log('hovered over id', id);
-
+		//console.log('hovered over id', id);
 		simulator.nodeAttribUniforms.selectedNode.value = id;
 
 	}

@@ -217,22 +217,6 @@ void main()	{
 
         }
 
-//        if ( epochPixel > 0.0 || selectedNode >= 0){
-//
-//            // if you are hover over something real, and in the time range
-//
-//            // if I'm hovering over a node, light it up.
-//            if (neighborPixel > 0.0 || selfPixel > 0.0) {
-//
-//                selfAttrib.y = 1.0;
-//
-//            }
-//
-////                selfAttrib.x = 600.0;   // make bigger immediately
-////                selfAttrib.y = 1.0;
-//
-//        }
-
     } else {
 
         // i have selected a node
@@ -268,75 +252,6 @@ void main()	{
         }
 
     }
-
-
-
-//    if (neighborPixel > 0.0 || selfPixel > 0.0) {
-//
-//        // if we are the node, or a neighbor of the currently selected node
-//
-//        selfAttrib.y = 0.8;
-//
-//        if ( epochPixel > 0.0){
-//
-//                selfAttrib.x = 600.0;   // make bigger immediately
-//                selfAttrib.y = 1.0;     // light up
-//
-//        } else {
-//
-//            if ( selfAttrib.x > 200.0){
-//
-//                selfAttrib.x -= 4000.0 * delta;
-//
-//            }
-//
-//
-//
-//        }
-//
-//    } else {
-////
-////        // we are not a neighbor or node of the selected node
-//
-//        if ( selfAttrib.y > 0.3){  // back to lit up, but not as much
-//
-//            selfAttrib.y -= delta * 1.5;
-//
-//        }
-////
-//        if ( selectedNode == -1.0){  // back to lit up, but not as much
-//
-//
-//
-//
-//           if ( epochPixel > 0.0){
-//
-//                    selfAttrib.x = 600.0;   // make bigger immediately
-//                    selfAttrib.y = 0.8;     // light up
-//
-//            } else {
-//
-//                if ( selfAttrib.x > 200.0){
-//
-//                    selfAttrib.x -= 4000.0 * delta;
-//
-//                }
-//
-//                if ( selfAttrib.y > 0.2){  // back to lit up, but not as much
-//
-//                    selfAttrib.y -= delta * 1.5;
-//
-//                }
-//
-//            }
-//
-//        }
-//
-//    }
-
-
-
-
 
     gl_FragColor = vec4( selfAttrib.xy, 0,0 );
 }

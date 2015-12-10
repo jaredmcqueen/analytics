@@ -178,7 +178,7 @@ function Slider() {
         //expand = true;
 
         //togglePlay();
-        //toggleRepeat();
+        toggleRepeat();
         //toggleExpand();
 
     };

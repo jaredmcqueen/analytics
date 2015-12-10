@@ -10,7 +10,7 @@ void main() {
 
     if (vPickingNode > 0.0){
 
-        node = texture2D(sprite, vec2(gl_PointCoord.x, gl_PointCoord.y));
+        node = texture2D( sprite, vec2( gl_PointCoord.x, gl_PointCoord.y ));
         gl_FragColor = node * vec4( vColor, vOpacity );
 
 

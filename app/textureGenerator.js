@@ -38,6 +38,44 @@ function generatePositionTexture(inputArray, textureSize, size) {
 }
 
 
+
+function generateIdMappings(inputArray, textureSize) {
+
+    var textureArray = new Float32Array(textureSize * textureSize * 4);
+
+    var counter = 0;
+
+    for (var i = 0; i < textureArray.length; i += 4) {
+
+        if (i < inputArray.length * 4) {
+
+            textureArray[i] = counter;
+            textureArray[i + 1] = 0;
+            textureArray[i + 2] = 0;
+            textureArray[i + 3] = 0;
+
+        } else {
+
+            // fill the remaining pixels with -1
+            textureArray[i] = -1.0;
+            textureArray[i + 1] = -1.0;
+            textureArray[i + 2] = -1.0;
+            textureArray[i + 3] = -1.0;
+
+        }
+
+        counter++;
+
+    }
+
+    var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
+    texture.needsUpdate = true;
+    console.log('generateIdMappings', texture.image.data);
+    return texture;
+
+}
+
+
 function generateCircularLayout(inputArray, textureSize) {
 
     var increase = Math.PI * 2 / inputArray.length;
@@ -279,7 +317,7 @@ function generateNodeAttribTexture(inputArray, textureSize) {
         if (i < inputArray.length * 4) {
 
             textureArray[i] = 200.0;
-            textureArray[i + 1] = 0.3;
+            textureArray[i + 1] = 0.2;
             textureArray[i + 2] = 0.0;
             textureArray[i + 3] = 0.0;
 
@@ -350,7 +388,7 @@ function generateIndiciesTexture(inputArray, textureSize) {
 
     var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
     texture.needsUpdate = true;
-    console.log('indicies', texture.image.data);
+    //console.log('indicies', texture.image.data);
     return texture;
 
 }
@@ -359,14 +397,12 @@ function generateIndiciesTexture(inputArray, textureSize) {
 function generateDataTexture(inputArray, textureSize) {
 
     var textureArray = new Float32Array(textureSize * textureSize * 4);
-    //console.log(textureArray);
 
     var currentIndex = 0;
     for (var i = 0; i < inputArray.length; i++) {
-        //console.log('working on', i, j, inputArray[i]);
+
         for (var j = 0; j < inputArray[i].length; j++) {
 
-            //console.log(currentIndex, inputArray[i][j]);
             textureArray[currentIndex] = inputArray[i][j];
             currentIndex++;
 
@@ -382,7 +418,7 @@ function generateDataTexture(inputArray, textureSize) {
 
     var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
     texture.needsUpdate = true;
-    console.log('edge data texture:', texture.image.data);
+    //console.log('edge data texture:', texture.image.data);
     return texture;
 
 }
@@ -413,7 +449,7 @@ function generateEpochDataTexture(inputArray, textureSize) {
 
     var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
     texture.needsUpdate = true;
-    console.log('epoch data texture:', texture.image.data);
+    //console.log('epoch data texture:', texture.image.data);
     return texture;
 
 }

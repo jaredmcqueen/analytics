@@ -72,8 +72,6 @@ void main()	{
 
         // force-directed n-body simulation
 
-        vec4 selfEdgeIndices = texture2D( edgeIndices, uv);
-
         if( selfPosition.w > 0.0 ){
             for(float y = 0.0; y < nodesTexWidth; y++){
                 for(float x = 0.0; x < nodesTexWidth; x++){
@@ -96,6 +94,8 @@ void main()	{
                 }
 
             }
+
+            vec4 selfEdgeIndices = texture2D( edgeIndices, uv);
 
             float idx = selfEdgeIndices.x;
             float idy = selfEdgeIndices.y;

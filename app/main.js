@@ -1,5 +1,7 @@
 var canvas, stats;
 var camera, scene, renderer, controls;
+var composer, vignette2Pass, multiPassBloomPass;
+var backgroundColor = new THREE.Color(0x3c3c3c);
 var nodeMesh, nodeGeometry, nodeUniforms, labelUniforms;
 var simulate = false;
 var graphStructure;
@@ -18,10 +20,6 @@ var slider;
 
 var epochMin, epochMax;
 var epochOffset;
-
-var testLabel;
-
-var lookupTable = {};
 
 
 var nodesAndEdges, nodesAndEpochs, nodesWidth, edgesWidth, epochsWidth, nodesCount, edgesCount, edgesAndEpochs, edgesLookupTable;
@@ -84,9 +82,26 @@ function init() {
 
 	renderer = new THREE.WebGLRenderer({
 		antialias: true,
-		alpha: true,
+		alpha: false,
 		canvas: canvas
 	});
+
+	WAGNER.vertexShadersPath = './shaders';
+	WAGNER.fragmentShadersPath = './shaders';
+	composer = new WAGNER.Composer(renderer, {useRGBA: false});
+
+	//vignette2Pass = new WAGNER.Vignette2Pass();
+	//vignette2Pass.params.boost = 1.0;
+	//vignette2Pass.params.reduction = 0.5;
+
+
+	vignette2Pass = new WAGNER.VignettePass();
+	vignette2Pass.params.amount = 0.45;
+	vignette2Pass.params.falloff = 0.35;
+
+	//multiPassBloomPass = new WAGNER.MultiPassBloomPass();
+	//multiPassBloomPass.params.blurAmount = 0.2;
+
 
 
 	//stats = new Stats();
@@ -179,6 +194,28 @@ function initNodes() {
 	interface.init();
 
 
+
+
+	gui = new dat.GUI();
+	var effects = gui.addFolder('effects');
+
+	var colorConfig = function () {
+		this.color = "#2a2a2a";
+	};
+	var conf = new colorConfig();
+
+	var colorPicker = effects.addColor(conf, 'color');
+	colorPicker.onChange(function (colorValue) {
+		console.log(colorValue);
+		backgroundColor = colorValue;
+	});
+
+
+
+	effects.add(vignette2Pass.params, 'amount').min(0).max(1);
+	effects.add(vignette2Pass.params, 'falloff').min(0).max(1);
+
+
 //    var gui = new dat.GUI();
 ////        gui.close();
 //
@@ -222,6 +259,7 @@ function onWindowResize() {
 	renderer.setSize(width, height, false);  // YOU MUST PASS FALSE HERE!
 	gpupicking.pickingTexture.setSize(width, height);
 	//pickingTexture.setSize(width, height);
+	composer.setSize(width, height);
 
 }
 
@@ -450,7 +488,16 @@ function render() {
 
 	if (nodeGeometry) gpupicking.update();
 
-	renderer.setClearColor(0x262626);
-	renderer.render(scene, camera);
+	renderer.setClearColor(backgroundColor);
+	renderer.autoClearColor = true;
+	//renderer.render(scene, camera);
+
+	composer.reset();
+	composer.render(scene, camera);
+	composer.pass(vignette2Pass);
+	//composer.pass(multiPassBloomPass);
+	//composer.pass(fxaaPass);
+
+	composer.toScreen();
 
 }

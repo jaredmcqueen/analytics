@@ -292,7 +292,7 @@ function createLabels() {
         uniforms: labelUniforms,
         vertexShader: shaders.vs.text,
         fragmentShader: shaders.fs.text,
-        blending: THREE.AdditiveBlending,
+        //blending: THREE.AdditiveBlending,
         depthTest: false,
         transparent: true
 

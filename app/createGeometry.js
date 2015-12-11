@@ -9,7 +9,8 @@ function createGeometry() {
 	// NODES
 
 
-	sprite = THREE.ImageUtils.loadTexture('textures/circle.png', {}, function () {
+	//sprite = THREE.ImageUtils.loadTexture('textures/circle.png', {}, function () {
+	sprite = THREE.ImageUtils.loadTexture('textures/disc.png', {}, function () {
 		renderer.render(scene, camera);
 	});
 
@@ -93,6 +94,7 @@ function createGeometry() {
 		vertexShader: shaders.vs.node,
 		fragmentShader: shaders.fs.node,
 		blending: THREE.AdditiveBlending,
+		//blending: THREE.AdditiveBlending,
 		depthTest: false,
 		transparent: true
 
@@ -191,7 +193,7 @@ function createGeometry() {
 		uniforms: edgeUniforms,
 		vertexShader: shaders.vs.edge,
 		fragmentShader: shaders.fs.edge,
-		blending: THREE.AdditiveBlending,
+		//blending: THREE.AdditiveBlending,
 		depthTest: false,
 		transparent: true
 	});

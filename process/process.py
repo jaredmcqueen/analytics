@@ -86,7 +86,7 @@ def threat_matcher():
     return enriched
 
 
-## Write enriched data set to CSV with proper header and formats to app directory for visualization
+## Will result in one enriched data set to CSV with proper header and formats to app directory for visualization
 def main():
 
     # Return output of match_writer which should be a properly formatted and enriched data set.

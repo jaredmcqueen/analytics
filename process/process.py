@@ -1,6 +1,6 @@
 ########################
 # Threat intelligence matching using Pandas and Open Source Intel Feeds
-# Author: Brian Brurok
+# Author: MetaStack, Inc -- BRB
 # Date: 12/7/2015
 #
 # This script will load multiple threat intelligence feeds and compare it to data sets

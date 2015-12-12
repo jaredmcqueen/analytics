@@ -77,10 +77,7 @@ def threat_matcher():
     # Remove "actor" field
     enriched = enriched.drop('actor', 1)
 
-
     # Add new column called "Event Time" based on a conversion of datetime to datetime object
-    #if enriched['datetime']
-
     enriched['Event Time'] = enriched['datetime'].astype('datetime64[s]')
 
     # Reformat dataframe to change column order

@@ -10,11 +10,11 @@
 
 import pandas as pd
 import numpy as np
-import glob # necessary if using csv matching instead of download of open source feeds
 import os
+import glob # necessary if using csv matching instead of download of open source feeds
 
 
-#### Specify data file for matching with threat intel and output file for enriched dataset
+#### Specify data paths for matching with threat intel and output file for enriched dataset
 data = 'raw' + os.sep + 'data.csv'  #Raw network data set
 output ='..' + os.sep + 'examples' + os.sep + 'output.csv'  #output directory for enriched csv - DO NOT CHANGE
 
@@ -29,7 +29,7 @@ def threat_collect():
     url_zeus_domains = 'https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist'
 
     #Convert to DataFrames
-    df_malc0de = pd.read_table(url_malc0de, index_col=None, skiprows=7, header=0, names=['actor'])
+    df_malc0de = pd.read_table(url_malc0de, index_col=None, skiprows=6, header=None, names=['actor'])
     df_et = pd.read_table(url_et, index_col=None, skiprows=5, header=0, names=['actor'])
     df_zeus = pd.read_table(url_zeus, index_col=None, skiprows=6, header=0, names=['actor'])
     df_zeus_domains = pd.read_table(url_zeus_domains, index_col=None, skiprows=6, header=0, names=['actor'])
@@ -55,11 +55,11 @@ def threat_collect():
 #### Take combined threat intel lists and match against raw dataset. Return properly formatted dataframe.
 def threat_matcher():
 
-    #grab combined threat intel
+    # grab combined threat intel
     ti_combine = threat_collect()
 
     # Read raw network data
-    df_data = pd.read_csv(data, keep_default_na=False, na_values=[''], skiprows=1, names=['datetime','source', 'target'], parse_dates=['datetime'])
+    df_data = pd.read_csv(data, error_bad_lines=False, keep_default_na=False, na_values=[''], skiprows=1, names=['datetime','source', 'target'], parse_dates=['datetime'])
 
     # Find and combine hits
     ti_src = pd.merge(left=df_data, right=ti_combine, left_on='source', right_on='actor')

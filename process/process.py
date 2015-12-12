@@ -59,7 +59,7 @@ def threat_matcher():
     ti_combine = threat_collect()
 
     # Read raw network data
-    df_data = pd.read_csv(data, error_bad_lines=False, keep_default_na=False, na_values=[''], header=0, names=['datetime','source', 'target'], parse_dates=['datetime'])
+    df_data = pd.read_csv(data, error_bad_lines=False, keep_default_na=False, na_values=[''], header=0, names=['datetime','source', 'target'], parse_dates=True)
 
     # Find and combine hits
     ti_src = pd.merge(left=df_data, right=ti_combine, left_on='source', right_on='actor')
@@ -77,8 +77,11 @@ def threat_matcher():
     # Remove "actor" field
     enriched = enriched.drop('actor', 1)
 
+
     # Add new column called "Event Time" based on a conversion of datetime to datetime object
-    enriched['Event Time'] = enriched['datetime'].astype('int').astype('datetime64[s]')
+    #if enriched['datetime']
+
+    enriched['Event Time'] = enriched['datetime'].astype('datetime64[s]')
 
     # Reformat dataframe to change column order
     enriched = enriched[['Event Time', 'source', 'target', 'src_hit', 'target_hit']]

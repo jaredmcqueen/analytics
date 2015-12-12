@@ -10,13 +10,16 @@
 
 import pandas as pd
 import numpy as np
-import glob #necessary if using csv matching instead of download of open source feeds
+import glob # necessary if using csv matching instead of download of open source feeds
 import os
 
-##### Specify data file for matching with threat intel and output file for enriched dataset
+
+#### Specify data file for matching with threat intel and output file for enriched dataset
 data = 'raw' + os.sep + 'data.csv'  #Raw network data set
 output ='..' + os.sep + 'examples' + os.sep + 'output.csv'  #output directory for enriched csv - DO NOT CHANGE
 
+
+#### Identify and collect threat intel feeds
 def threat_collect():
 
     # Includes Malc0de, emerging threats and Zeus Tracker as examples
@@ -31,7 +34,6 @@ def threat_collect():
     df_zeus = pd.read_table(url_zeus, index_col=None, skiprows=6, header=0, names=['actor'])
     df_zeus_domains = pd.read_table(url_zeus_domains, index_col=None, skiprows=6, header=0, names=['actor'])
 
-    #######################
     # Alternatively, put a bunch of threat intel CSVs in the "intel" directory
     #
     # Read all threat intel from intel folder
@@ -43,8 +45,6 @@ def threat_collect():
     #     new_frame = pd.read_csv(file_,index_col=None, header=0, names=['actor'])
     #     ti_list_.append(new_frame)
     # ti_combine = pd.concat(ti_list_)
-    ######################
-
 
     # Combine dataframes
     ti_combine = pd.concat([df_malc0de, df_et, df_zeus, df_zeus_domains], axis=0)
@@ -69,7 +69,7 @@ def threat_matcher():
     # Merge or Concatenate TI hits and raw data. Using left join to ensure raw dataset remains and hits are "merged"
     enriched = pd.merge(left=df_data,right=hits_combine, how='left', left_on=['datetime','source', 'target'], right_on=['datetime','source', 'target'])
 
-    ###### Add columns for src and tgt hits, clean up dataframe and format date time column as a datetime object
+    # Add columns for src and tgt hits, clean up dataframe and format date time column as a datetime object
     # Next two lines add a column called src_hit or target_hit based on which field matched the indicator
     enriched['src_hit'] = np.where(enriched['source']==enriched['actor'], 'true', '')
     enriched['target_hit'] = np.where(enriched['target']==enriched['actor'], 'true', '')
@@ -77,7 +77,7 @@ def threat_matcher():
     # Remove "actor" field
     enriched = enriched.drop('actor', 1)
 
-    #Add new column called "Event Time" based on a conversion of datetime to datetime object
+    # Add new column called "Event Time" based on a conversion of datetime to datetime object
     enriched['Event Time'] = enriched['datetime'].astype('int').astype('datetime64[s]')
 
     # Reformat dataframe to change column order
@@ -86,7 +86,7 @@ def threat_matcher():
     return enriched
 
 
-## Will result in one enriched data set to CSV with proper header and formats to app directory for visualization
+#### Will result in one enriched data set to CSV with proper header and formats to app directory for visualization
 def main():
 
     # Return output of match_writer which should be a properly formatted and enriched data set.

@@ -3,10 +3,11 @@ __author__ = 'brurokbr'
 import pandas as pd
 import numpy as np
 import glob
+import os
 
 
 # Specify data file for matching with threat intel
-data = 'raw/data.csv'
+data = 'raw' + os.sep + 'data.csv'
 
 # Includes Malc0de, emerging threats and Zeus Tracker as examples
 url_malc0de = 'http://malc0de.com/bl/IP_Blacklist.txt'
@@ -46,17 +47,18 @@ hits_combine = pd.concat([ti_src, ti_tgt], axis=0)
 
 # Merge or Concatenate TI hits and raw data
 # enriched = pd.merge([df_data, hits_combine], axis=0)
-enriched = pd.merge(left=df_data,right=hits_combine, how='left', left_on=['epoch','source', 'target'], right_on=['epoch','source', 'target'])
+enriched = pd.merge(left=df_data,right=hits_combine, how='left', left_on=['datetime','source', 'target'], right_on=['datetime','source', 'target'])
 
 # Add columns for src and tgt hits, clean up dataframe and timestamps
 enriched['src_hit'] = np.where(enriched['source']==enriched['actor'], 'true', '')
 enriched['target_hit'] = np.where(enriched['target']==enriched['actor'], 'true', '')
 enriched = enriched.drop('actor', 1)
-enriched['Event Time'] = enriched['epoch'].astype('int').astype('datetime64[s]')
+enriched['Event Time'] = enriched['datetime'].astype('int').astype('datetime64[s]')
 enriched = enriched[['Event Time', 'source', 'target', 'src_hit', 'target_hit']]
 
-
 # Write enriched file to csv
-enriched.to_csv('../examples/output.csv', columns = ['Event Time', 'source', 'target', 'src_hit', 'target_hit'],
+output ='..' + os.sep + 'examples' + os.sep + 'output.csv'
+
+enriched.to_csv(output, columns = ['Event Time', 'source', 'target', 'src_hit', 'target_hit'],
                 header = ['Event Time', 'sourceAddress', 'destinationAddress', 'src_hit', 'target_hit'], index=False)
 

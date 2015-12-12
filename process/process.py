@@ -29,10 +29,10 @@ def threat_collect():
     url_zeus_domains = 'https://zeustracker.abuse.ch/blocklist.php?download=domainblocklist'
 
     #Convert to DataFrames
-    df_malc0de = pd.read_table(url_malc0de, index_col=None, skiprows=6, header=None, names=['actor'])
-    df_et = pd.read_table(url_et, index_col=None, skiprows=5, header=0, names=['actor'])
-    df_zeus = pd.read_table(url_zeus, index_col=None, skiprows=6, header=0, names=['actor'])
-    df_zeus_domains = pd.read_table(url_zeus_domains, index_col=None, skiprows=6, header=0, names=['actor'])
+    df_malc0de = pd.read_table(url_malc0de, index_col=None, skiprows=4, header=None, names=['actor'])
+    df_et = pd.read_table(url_et, index_col=None, skiprows=0, header=None, names=['actor'])
+    df_zeus = pd.read_table(url_zeus, index_col=None, skiprows=6, header=None, names=['actor'])
+    df_zeus_domains = pd.read_table(url_zeus_domains, index_col=None, skiprows=6, header=None, names=['actor'])
 
     # Alternatively, put a bunch of threat intel CSVs in the "intel" directory
     #

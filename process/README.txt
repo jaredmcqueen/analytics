@@ -8,15 +8,14 @@ Functionality:
 
 
 Data formats:
--Intel CSVs should have at least one column, the indicator columns:
+-Intel CSVs should have at least one column, the indicator column, but will also take any of the following:
         -Indicator: the IP, domain, email, etc.
         -Reference: where did you retrieve the threat intel
         -Type: Type of indicator (malware hosting, C2, spearphishing, whatever)
--Doesn't matter what you name the intel columns, just so long as there are three of them. Fixing that soon.
 
 -Raw format is looking for a csv with the following fields:
 
-        epoch,source,target
+        datetime,source,target
 
        Source and target can be any sort of network object (email, IP, hostname, user, etc.)
 

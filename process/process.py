@@ -37,7 +37,7 @@ df_zeus_domains = pd.read_table(url_zeus_domains, index_col=None, skiprows=6, he
 ti_combine = pd.concat([df_malc0de, df_et, df_zeus, df_zeus_domains], axis=0)
 
 # Read raw network data
-df_data = pd.read_csv(data, keep_default_na=False, na_values=[''], skiprows=1, names=['epoch','source', 'target'], parse_dates=['epoch'])
+df_data = pd.read_csv(data, keep_default_na=False, na_values=[''], skiprows=1, names=['datetime','source', 'target'], parse_dates=['datetime'])
 
 # Find and combine hits
 ti_src = pd.merge(left=df_data, right=ti_combine, left_on='source', right_on='actor')

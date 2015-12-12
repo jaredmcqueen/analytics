@@ -3,8 +3,8 @@
 # Author: Brian Brurok
 # Date: 12/7/2015
 #
-# This script will load multiple threat intelligence feeds and compare it to datasets
-# place in the "Raw" folder. The output is a single "merged" dataset that can be
+# This script will load multiple threat intelligence feeds and compare it to data sets
+# placed in the "Raw" folder. The output is a single "merged" data set that can be
 # passed to data graphing utility for threat identification and analysis.
 #########################
 

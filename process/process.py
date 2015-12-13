@@ -14,7 +14,7 @@ import os
 import glob # necessary if using csv matching instead of download of open source feeds
 
 
-#### Specify data paths for matching with threat intel and output file for enriched dataset
+#### Specify data paths for matching with threat intel and output file for enriched data set
 data = 'raw' + os.sep + 'data.csv'  #Raw network data set
 output ='..' + os.sep + 'examples' + os.sep + 'output.csv'  #output directory for enriched csv - DO NOT CHANGE
 

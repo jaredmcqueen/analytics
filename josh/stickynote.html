@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+
+    <link  href="http://fonts.googleapis.com/css?family=Reenie+Beanie:regular" rel="stylesheet" type="text/css">
+
+
+
+  <script>
+      var nodes =
+            {
+                "192.168.1.1": {
+                    "id": 0,
+                    "edges": [
+                        1,
+                        10,
+                        48,
+                        48,
+                        57,
+                        150,
+                        152
+                    ],
+                    "data": [
+                        {
+                            "Event Time": "2015/10/14 08:17:43 EST",
+                            "sourceAddress": "192.168.1.95",
+                            "destinationAddress": "172.16.1.1"
+                        }]
+                }
+            }
+                        var x = nodes["192.168.1.1"].data[0]
+
+
+ document.getElementById('div').innerHTML = x;
+
+  </script>
+
+
+
+<style type="text/css">
+
+h2,p{
+  font-size:70%;
+  font-weight:normal;
+}
+ul,li{
+  list-style:none;
+}
+ul{
+  overflow:hidden;
+  padding:3em;
+}
+ul li a{
+  text-decoration:none;
+  color:#000;
+  background:#ffc;
+  display:block;
+  height:5em;
+  width:5em;
+  padding:1em;
+}
+ul li{
+  margin:1em;
+  float:left;
+}
+ol{text-align:center;}
+ol li{display:inline;padding-right:1em;}
+ol li a{color:#fff;}
+
+
+</style>
+</head>
+<body>
+    <div>
+
+
+        <ul>
+            <li>
+
+                <a href="#">
+                    <h2>Host:</h2>
+                    <p>IP:</p>
+                    <script>alert(JSON.stringify(x))   </script>
+
+                 </a>
+            </li>
+    </div>
+
+</body>
+</html>

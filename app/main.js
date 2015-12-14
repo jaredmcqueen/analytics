@@ -82,22 +82,22 @@ function init() {
 
 	renderer = new THREE.WebGLRenderer({
 		antialias: true,
-		alpha: false,
+		alpha: true,
 		canvas: canvas
 	});
 
-	WAGNER.vertexShadersPath = './shaders';
-	WAGNER.fragmentShadersPath = './shaders';
-	composer = new WAGNER.Composer(renderer, {useRGBA: false});
+	//WAGNER.vertexShadersPath = './shaders';
+	//WAGNER.fragmentShadersPath = './shaders';
+	//composer = new WAGNER.Composer(renderer, {useRGBA: false});
 
 	//vignette2Pass = new WAGNER.Vignette2Pass();
 	//vignette2Pass.params.boost = 1.0;
 	//vignette2Pass.params.reduction = 0.5;
 
 
-	vignette2Pass = new WAGNER.VignettePass();
-	vignette2Pass.params.amount = 0.45;
-	vignette2Pass.params.falloff = 0.35;
+	//vignette2Pass = new WAGNER.VignettePass();
+	//vignette2Pass.params.amount = 0.45;
+	//vignette2Pass.params.falloff = 0.35;
 
 	//multiPassBloomPass = new WAGNER.MultiPassBloomPass();
 	//multiPassBloomPass.params.blurAmount = 0.2;
@@ -195,25 +195,25 @@ function initNodes() {
 
 
 
-
-	gui = new dat.GUI();
-	var effects = gui.addFolder('effects');
-
-	var colorConfig = function () {
-		this.color = "#2a2a2a";
-	};
-	var conf = new colorConfig();
-
-	var colorPicker = effects.addColor(conf, 'color');
-	colorPicker.onChange(function (colorValue) {
-		console.log(colorValue);
-		backgroundColor = colorValue;
-	});
-
-
-
-	effects.add(vignette2Pass.params, 'amount').min(0).max(1);
-	effects.add(vignette2Pass.params, 'falloff').min(0).max(1);
+	//
+	//gui = new dat.GUI();
+	//var effects = gui.addFolder('effects');
+	//
+	//var colorConfig = function () {
+	//	this.color = "#2a2a2a";
+	//};
+	//var conf = new colorConfig();
+	//
+	////var colorPicker = effects.addColor(conf, 'color');
+	////colorPicker.onChange(function (colorValue) {
+	////	console.log(colorValue);
+	////	backgroundColor = colorValue;
+	////});
+	//
+	//
+	//
+	//effects.add(vignette2Pass.params, 'amount').min(0).max(1);
+	//effects.add(vignette2Pass.params, 'falloff').min(0).max(1);
 
 
 //    var gui = new dat.GUI();
@@ -259,7 +259,7 @@ function onWindowResize() {
 	renderer.setSize(width, height, false);  // YOU MUST PASS FALSE HERE!
 	gpupicking.pickingTexture.setSize(width, height);
 	//pickingTexture.setSize(width, height);
-	composer.setSize(width, height);
+	//composer.setSize(width, height);
 
 }
 
@@ -488,16 +488,18 @@ function render() {
 
 	if (nodeGeometry) gpupicking.update();
 
-	renderer.setClearColor(backgroundColor);
-	renderer.autoClearColor = true;
+	//renderer.setClearColor(backgroundColor);
+	renderer.setClearColor( 0x000, 0.0);
+	renderer.render(scene, camera);
+	//renderer.autoClearColor = true;
 	//renderer.render(scene, camera);
 
-	composer.reset();
-	composer.render(scene, camera);
-	composer.pass(vignette2Pass);
+	//composer.reset();
+	//composer.render(scene, camera);
+	//composer.pass(vignette2Pass);
 	//composer.pass(multiPassBloomPass);
 	//composer.pass(fxaaPass);
 
-	composer.toScreen();
+	//composer.toScreen();
 
 }

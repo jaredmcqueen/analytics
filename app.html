@@ -17,7 +17,8 @@
     <style>
         body {
             font-family: Monospace;
-            background-color: #f0f0f0;
+            /*background-color: #f0f0f0;*/
+            background-color: black;
             margin: 0px;
             overflow: hidden;
         }
@@ -48,7 +49,7 @@
             top: 80%;
             width: 800px;
             margin-left: -400px;
-            z-index: 1;
+            z-index: 2;
         }
 
         #layouts {
@@ -59,6 +60,25 @@
             /*margin-left: -400px;*/
             z-index: 1;
         }
+
+        .overlay {
+            -webkit-box-align: center;
+            -webkit-box-pack: center;
+            -webkit-transition: 0.25s opacity;
+            background: -webkit-radial-gradient(rgba(127, 127, 127, 0.5),
+            rgba(127, 127, 127, 0.5) 1%,
+            rgba(0, 0, 0, 0.7));
+            bottom: 0;
+            display: -webkit-box;
+            left: 0;
+            /*padding: 20px;*/
+            /*padding-bottom: 130px;*/
+            position: fixed;
+            right: 0;
+            top: 0;
+            z-index: 1;
+        }
+
     </style>
 
 
@@ -97,7 +117,7 @@
 </head>
 
 <body>
-<canvas id="c"></canvas>
+<canvas id="c" class="overlay"></canvas>
 <div id="slider" style="display: none;">
     <div>
         <input type="text" id="range" value="" name="range">

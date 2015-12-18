@@ -238,7 +238,7 @@ void main()	{
             // if you are a node or a neighbor
             if ( neighborPixel > 0.0 || selfPixel > 0.0){
 
-                selfAttrib.y = 0.8; // light up *only* self or neighbors
+                selfAttrib.y = 0.3; // light up *only* self or neighbors
 
                 if ( epochPixel > 0.0){
 

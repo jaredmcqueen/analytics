@@ -9,8 +9,8 @@ function createGeometry() {
 	// NODES
 
 
-	//sprite = THREE.ImageUtils.loadTexture('textures/circle.png', {}, function () {
-	sprite = THREE.ImageUtils.loadTexture('textures/disc.png', {}, function () {
+	sprite = THREE.ImageUtils.loadTexture('textures/new_circle.png', {}, function () {
+	//sprite = THREE.ImageUtils.loadTexture('textures/disc.png', {}, function () {
 		renderer.render(scene, camera);
 	});
 

@@ -45,13 +45,15 @@ void main() {
 
     if ( threat > 0.0 ){
 
-        nodeSize = sin(currentTime * 0.005) * 600.0;
+        float newSize = sin(currentTime * 0.0025) * nodeSize;
 
-        if ( nodeSize < 300.0){
+        nodeSize += newSize + nodeSize;
 
-            nodeSize = 300.0;
+//        if ( nodeSize < 300.0){
 
-        }
+//            nodeSize = 300.0;
+
+//        }
 
 
     }

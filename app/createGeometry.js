@@ -9,8 +9,11 @@ function createGeometry() {
 	// NODES
 
 
-	sprite = THREE.ImageUtils.loadTexture('textures/new_circle.png', {}, function () {
-	//sprite = THREE.ImageUtils.loadTexture('textures/disc.png', {}, function () {
+	nodeRegular = THREE.ImageUtils.loadTexture('textures/new_circle.png', {}, function () {
+		renderer.render(scene, camera);
+	});
+
+	nodeThreat = THREE.ImageUtils.loadTexture('textures/crosshair.png', {}, function () {
 		renderer.render(scene, camera);
 	});
 
@@ -23,11 +26,13 @@ function createGeometry() {
 	var nodeColors = new THREE.BufferAttribute(new Float32Array(nodesCount * 3), 3);
 	var nodePick = new THREE.BufferAttribute(new Float32Array(nodesCount), 1);
 	var hover = new THREE.BufferAttribute(new Float32Array(nodesCount), 1);
+	var threat = new THREE.BufferAttribute(new Float32Array(nodesCount), 1);
 
 	nodeGeometry.addAttribute('position', nodePositions);
 	nodeGeometry.addAttribute('texPos', nodeReferences);
 	nodeGeometry.addAttribute('customColor', nodeColors);
 	nodeGeometry.addAttribute('pickingNode', nodePick);
+	nodeGeometry.addAttribute('threat', threat);
 
 // picking geometry attributes (different colors)
 	var pickingColors = new THREE.BufferAttribute(new Float32Array(nodesCount * 3), 3);
@@ -36,25 +41,58 @@ function createGeometry() {
 	pickingNodeGeometry.addAttribute('texPos', nodeReferences);
 	pickingNodeGeometry.addAttribute('customColor', pickingColors);
 	pickingNodeGeometry.addAttribute('pickingNode', pickingPick);
+	pickingNodeGeometry.addAttribute('threat', threat);
 
 	var color = new THREE.Color(0x999999);
+	var chromaColor;
+	//console.log(nodesCount);
+
+	var scale = ['#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', '#fb9a99', '#fdbf6f', '#ff7f00', '#cab2d6', '#6a3d9a', '#ffff99', '#b15928'];
+
+	var chromaScale = chroma.scale(scale).domain([0, nodesCount]);
+	var threatValue = 0;
 
 	var v = 0;
 	$.each(g.nodes, function (key, value) {
 
 		bigLookupTable.push(key);
 
+		threatValue = 0;
+		$.each(value.data, function (dkey, dvalue) {
+
+			if (key == dvalue['source']){
+
+				if (dvalue['source_hit'] == true) threatValue = 1;
+
+			}
+
+			if (key == dvalue['target']){
+
+				if (dvalue['target_hit'] == true) threatValue = 1;
+
+			}
+
+		});
 
 		nodePositions.array[v * 3] = 0;
 		nodePositions.array[v * 3 + 1] = 0;
 		nodePositions.array[v * 3 + 2] = 0;
 
-		color.setHSL(v / nodesCount, 1.0, 0.5);
-		//color.setHex(0x666666);
-		nodeColors.array[v * 3] = color.r;
-		nodeColors.array[v * 3 + 1] = color.g;
-		nodeColors.array[v * 3 + 2] = color.b;
-		edgesLookupTable[key]['color'] = [color.r, color.g, color.b];
+		if (threatValue == 1){
+
+			chromaColor = [1.0, 0.0, 0.0];  // red
+
+
+		} else {
+
+			chromaColor = chromaScale(v).gl();  // returns a RGB array normalized from 0.0 - 1.0
+
+		}
+
+		nodeColors.array[v * 3] = chromaColor[0];
+		nodeColors.array[v * 3 + 1] = chromaColor[1];
+		nodeColors.array[v * 3 + 2] = chromaColor[2];
+		edgesLookupTable[key]['color'] = chromaColor;  // used later for labels and edges
 
 		color.setHex(v + 1);
 		pickingColors.array[v * 3] = color.r;
@@ -68,6 +106,11 @@ function createGeometry() {
 		nodeReferences.array[v * 2] = (v % nodesWidth) / nodesWidth;
 		nodeReferences.array[(v * 2) + 1] = (Math.floor(v / nodesWidth)) / nodesWidth;
 
+		// threats
+
+		threat.array[v] = threatValue;
+
+
 		v++;
 	});
 
@@ -77,7 +120,10 @@ function createGeometry() {
 
 		positionTexture: {type: "t", value: null},
 		nodeAttribTexture: {type: "t", value: null},
-		sprite: {type: "t", value: sprite}
+		sprite: {type: "t", value: nodeRegular},
+		threatSprite: {type: "t", value: nodeThreat},
+		currentTime: {type: "f", value: null}
+
 
 	};
 

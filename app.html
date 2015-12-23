@@ -98,6 +98,7 @@
     <script src="lib/UbuntuMono.js"></script>
     <script src="lib/Wagner.js"></script>
     <script src="lib/Wagner.base.js"></script>
+    <script src="lib/chroma.min.js"></script>
 
     <!--app includes-->
 
@@ -230,9 +231,9 @@
 
     $(document).ready(function () {
 
-//			var csvfile = "examples/output.csv";
-//			 var csvfile = "examples/2hours.csv";
-        var csvfile = "examples/2hoursSmall.csv";
+        var csvfile = "examples/output.csv";
+//			 var csvfile = "examples/2hoursBIG.csv";
+//        var csvfile = "examples/2hoursSmall.csv";
 
         $.get(csvfile, function (file) {
 

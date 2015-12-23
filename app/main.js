@@ -40,10 +40,11 @@ shaders.shaderSetLoaded = function () {
 	init();
 	animate();
 
-	if (!_.isEmpty(g.nodes)) {
-		initNodes();
-		simulate = true;
-	}
+	//if (!_.isEmpty(g.nodes)) {
+	//	console.log('using generator');
+	//	initNodes();
+	//	simulate = true;
+	//}
 };
 
 shaders.load('vs-edge', 'edge', 'vertex');
@@ -57,6 +58,15 @@ shaders.load('sim-position', 'position', 'simulation');
 shaders.load('sim-nodeAttrib', 'nodeAttrib', 'simulation');
 shaders.load('vs-text', 'text', 'vertex');
 shaders.load('fs-text', 'text', 'fragment');
+
+
+function enableThreats(){
+
+	console.log('enabled');
+
+
+
+}
 
 
 function init() {
@@ -472,6 +482,7 @@ function render() {
 	last = now;
 
 
+
 	if (simulate) {
 
 		temperature *= 0.99;
@@ -486,7 +497,12 @@ function render() {
 		//graphStructure.rotation.y += 0.0025;
 	}
 
-	if (nodeGeometry) gpupicking.update();
+	if (nodeGeometry) {
+
+		gpupicking.update();
+		nodeUniforms.currentTime.value = now;
+		//nodeUniforms.currentTime.value = Math.sin(now * 0.0005) * 1;
+	}
 
 	//renderer.setClearColor(backgroundColor);
 	renderer.setClearColor( 0x000, 0.0);

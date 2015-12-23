@@ -4,9 +4,9 @@ function Graph(settings) {
     var edges = {};
     var settings = {
         epoch: 'Event Time',
-        epochFormat: 'YYYY/M/D H:m:s',
-        source: 'sourceAddress',
-        target: 'destinationAddress'
+        epochFormat: 'YYYY-M-D H:m:s',
+        source: 'source',
+        target: 'target'
     };
 
     this.edges = edges;

@@ -96,7 +96,7 @@ def main():
 
     # Write to CSV in examples directory for visualization
     enriched.to_csv(output, columns = ['Event Time', 'source', 'target', 'src_hit', 'target_hit'],
-                    header = ['Event Time', 'sourceAddress', 'destinationAddress', 'src_hit', 'target_hit'], index=False, date_format='%s')
+                    header = ['epoch', 'source', 'target', 'source_hit', 'target_hit'], index=False, date_format='%s')
 
 
 main()

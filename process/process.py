@@ -86,7 +86,6 @@ def threat_matcher():
     # Remove "actor" field
     enriched = enriched.drop('actor', 1)
 
-
     # Reformat datetime field into epoch time
     enriched['EventTime'] = enriched['datetime'].apply(lambda dates: dates.strftime('%s%Z'))
 

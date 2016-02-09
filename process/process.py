@@ -11,7 +11,7 @@
 import pandas as pd
 import numpy as np
 import os
-import datetime as dt
+import time
 import glob  # necessary if using csv matching instead of download of open source feeds
 
 # Specify data paths for matching with threat intel and output file for enriched data set
@@ -60,6 +60,7 @@ def threat_matcher():
     df_data = pd.read_csv(data, error_bad_lines=False, keep_default_na=False, na_values=[''], header=0,
                           names=['datetime', 'source', 'target'], parse_dates=True)
 
+    # Timestamp stuff: Use GMT in your datasets; just makes everything better
     # IF NECESSARY, SET YOUR TIME STAMP FORMAT HERE by replacing "infer_datetime_format" with "format='%Y/%m/%d'"
     # Replace format as necessary for your dataset:
     # '%y/%m/%d' -- 2014/10/2
@@ -85,7 +86,11 @@ def threat_matcher():
     # Remove "actor" field
     enriched = enriched.drop('actor', 1)
 
-    enriched['EventTime'] = enriched['datetime'].apply(lambda x: x.strftime('%s'))
+
+    # Reformat datetime field into epoch time
+    enriched['EventTime'] = enriched['datetime'].apply(lambda dates: dates.strftime('%s%Z'))
+
+# make it timezone-conscious in GMT and convert that to Eastern
 
     # Reformat dataframe to change column order
     enriched = enriched[['EventTime', 'source', 'target', 'src_hit', 'tgt_hit']]
@@ -100,7 +105,8 @@ def main():
 
     # Write to CSV in examples directory for visualization
 
-    enriched.to_csv(output, mode='w', date_format='epoch', columns=['EventTime', 'source', 'target', 'src_hit', 'tgt_hit'],
+    enriched.to_csv(output, date_format='%s', mode='w', columns=['EventTime', 'source', 'target', 'src_hit', 'tgt_hit'],
                     header=['epoch', 'source', 'target', 'source_hit', 'target_hit'], index=False)
+
 
 main()

@@ -11,7 +11,6 @@
 import pandas as pd
 import numpy as np
 import os
-from dateutil.parser import parse
 import glob  # necessary if using csv matching instead of download of open source feeds
 
 # Specify data paths for matching with threat intel and output file for enriched data set
@@ -60,13 +59,13 @@ def threat_matcher():
     df_data = pd.read_csv(data, error_bad_lines=False, keep_default_na=False, na_values=[''], header=0,
                           names=['datetime', 'source', 'target'], parse_dates=True)
 
-    # IF NECESSARY, SET YOUR TIME STAMP FORMAT HERE
-    # Examples:
+    # IF NECESSARY, SET YOUR TIME STAMP FORMAT HERE by replacing "infer_datetime_format" with "format='%Y/%m/%d'"
+    # Replace format as necessary for your dataset:
     # '%y/%m/%d' -- 2014/10/2
     # '%y/%m/%d %H:%M:%S' -- 2014/10/2 10:32:31
     # '%y/%m/%d %H:%M:%S %Z' -- 2015/10/14 08:17:40 EST
 
-    df_data['datetime'] = pd.to_datetime(df_data['datetime'], format='%Y/%m/%d %H:%M:%S %Z')
+    df_data['datetime'] = pd.to_datetime(df_data['datetime'], infer_datetime_format=True)
 
     # Find and combine hits
     ti_src = pd.merge(left=df_data, right=ti_combine, left_on='source', right_on='actor')
@@ -100,5 +99,6 @@ def main():
     enriched.to_csv(output, columns=['datetime', 'source', 'target', 'src_hit', 'target_hit'],
                     header=['epoch', 'source', 'target', 'source_hit', 'target_hit'], date_format='%s', index=False)
 
+    print(enriched.dtypes)
 
 main()

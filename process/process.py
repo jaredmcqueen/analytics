@@ -11,6 +11,7 @@
 import pandas as pd
 import numpy as np
 import os
+import datetime as dt
 import glob  # necessary if using csv matching instead of download of open source feeds
 
 # Specify data paths for matching with threat intel and output file for enriched data set
@@ -79,13 +80,15 @@ def threat_matcher():
     # Add columns for src and tgt hits, clean up dataframe and format date time column as a datetime object
     # Next two lines add a column called src_hit or target_hit based on which field matched the indicator
     enriched['src_hit'] = np.where(enriched['source'] == enriched['actor'], 'true', '')
-    enriched['target_hit'] = np.where(enriched['target'] == enriched['actor'], 'true', '')
+    enriched['tgt_hit'] = np.where(enriched['target'] == enriched['actor'], 'true', '')
 
     # Remove "actor" field
     enriched = enriched.drop('actor', 1)
 
+    enriched['EventTime'] = enriched['datetime'].apply(lambda x: x.strftime('%s'))
+
     # Reformat dataframe to change column order
-    enriched = enriched[['datetime', 'source', 'target', 'src_hit', 'target_hit']]
+    enriched = enriched[['EventTime', 'source', 'target', 'src_hit', 'tgt_hit']]
 
     return enriched
 
@@ -96,9 +99,8 @@ def main():
     enriched = threat_matcher()
 
     # Write to CSV in examples directory for visualization
-    enriched.to_csv(output, columns=['datetime', 'source', 'target', 'src_hit', 'target_hit'],
-                    header=['epoch', 'source', 'target', 'source_hit', 'target_hit'], date_format='%s', index=False)
 
-    print(enriched.dtypes)
+    enriched.to_csv(output, mode='w', date_format='epoch', columns=['EventTime', 'source', 'target', 'src_hit', 'tgt_hit'],
+                    header=['epoch', 'source', 'target', 'source_hit', 'target_hit'], index=False)
 
 main()

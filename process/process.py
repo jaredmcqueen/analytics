@@ -11,17 +11,16 @@
 import pandas as pd
 import numpy as np
 import os
-import glob # necessary if using csv matching instead of download of open source feeds
-
+from dateutil.parser import parse
+import glob  # necessary if using csv matching instead of download of open source feeds
 
 # Specify data paths for matching with threat intel and output file for enriched data set
 data = 'raw' + os.sep + 'data.csv'  # Raw network data set
-output ='..' + os.sep + 'examples' + os.sep + 'output.csv'  # output directory for enriched csv - DO NOT CHANGE
+output = '..' + os.sep + 'examples' + os.sep + 'output.csv'  # output directory for enriched csv - DO NOT CHANGE
 
 
 # Identify and collect threat intel feeds
 def threat_collect():
-
     # Includes Malc0de, emerging threats and Zeus Tracker as examples
     url_malc0de = 'http://malc0de.com/bl/IP_Blacklist.txt'
     url_et = 'http://rules.emergingthreats.net/blockrules/compromised-ips.txt'
@@ -54,13 +53,20 @@ def threat_collect():
 
 # Take combined threat intel lists and match against raw dataset. Return properly formatted dataframe.
 def threat_matcher():
-
     # grab combined threat intel
     ti_combine = threat_collect()
 
     # Read raw network data
     df_data = pd.read_csv(data, error_bad_lines=False, keep_default_na=False, na_values=[''], header=0,
-                          names=['datetime','source', 'target'], parse_dates=True)
+                          names=['datetime', 'source', 'target'], parse_dates=True)
+
+    # IF NECESSARY, SET YOUR TIME STAMP FORMAT HERE
+    # Examples:
+    # '%y/%m/%d' -- 2014/10/2
+    # '%y/%m/%d %H:%M:%S' -- 2014/10/2 10:32:31
+    # '%y/%m/%d %H:%M:%S %Z' -- 2015/10/14 08:17:40 EST
+
+    df_data['datetime'] = pd.to_datetime(df_data['datetime'], format='%Y/%m/%d %H:%M:%S %Z')
 
     # Find and combine hits
     ti_src = pd.merge(left=df_data, right=ti_combine, left_on='source', right_on='actor')
@@ -68,35 +74,31 @@ def threat_matcher():
     hits_combine = pd.concat([ti_src, ti_tgt], axis=0)
 
     # Merge or Concatenate TI hits and raw data. Using left join to ensure raw dataset remains and hits are "merged"
-    enriched = pd.merge(left=df_data,right=hits_combine, how='left', left_on=['datetime','source', 'target'],
-                        right_on=['datetime','source', 'target'])
+    enriched = pd.merge(left=df_data, right=hits_combine, how='left', left_on=['datetime', 'source', 'target'],
+                        right_on=['datetime', 'source', 'target'])
 
     # Add columns for src and tgt hits, clean up dataframe and format date time column as a datetime object
     # Next two lines add a column called src_hit or target_hit based on which field matched the indicator
-    enriched['src_hit'] = np.where(enriched['source']==enriched['actor'], 'true', '')
-    enriched['target_hit'] = np.where(enriched['target']==enriched['actor'], 'true', '')
+    enriched['src_hit'] = np.where(enriched['source'] == enriched['actor'], 'true', '')
+    enriched['target_hit'] = np.where(enriched['target'] == enriched['actor'], 'true', '')
 
     # Remove "actor" field
     enriched = enriched.drop('actor', 1)
 
-    # Add new column called "Event Time" based on a conversion of datetime to datetime object
-    enriched['Event Time'] = enriched['datetime'].astype('datetime64[s]')
-
     # Reformat dataframe to change column order
-    enriched = enriched[['Event Time', 'source', 'target', 'src_hit', 'target_hit']]
+    enriched = enriched[['datetime', 'source', 'target', 'src_hit', 'target_hit']]
 
     return enriched
 
 
 # Will result in one enriched data set to CSV with proper header and formats to app directory for visualization
 def main():
-
     # Return output of match_writer which should be a properly formatted and enriched data set.
     enriched = threat_matcher()
 
     # Write to CSV in examples directory for visualization
-    enriched.to_csv(output, columns = ['Event Time', 'source', 'target', 'src_hit', 'target_hit'],
-                    header = ['epoch', 'source', 'target', 'source_hit', 'target_hit'], index=False, date_format='%s')
+    enriched.to_csv(output, columns=['datetime', 'source', 'target', 'src_hit', 'target_hit'],
+                    header=['epoch', 'source', 'target', 'source_hit', 'target_hit'], date_format='%s', index=False)
 
 
 main()

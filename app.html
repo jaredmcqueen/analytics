@@ -113,6 +113,7 @@
     <script src="app/TextParticles.js"></script>
     <script src="app/guiinterface.js"></script>
 
+    <script src="examples/sampleData.js"></script>
 
 </head>
 
@@ -144,116 +145,33 @@
 
 
 <script>
-    //-----------------------------------------------------
-    //  GRAVITY
-    //-----------------------------------------------------
-    //    var container = document.createElement( 'div' );
-    //    container.id = 'interface';
-    //    var unselect = '-o-user-select:none; -ms-user-select:none; -khtml-user-select:none; -webkit-user-select:none; -moz-user-select: none; user-select: none;'
-    //    //container.style.cssText = unselect+ 'position:absolute; color:#CCCCCC; font-size:10px; font-family:"Trebuchet MS", Helvetica, sans-serif; width:100%; height:100%; pointer-events:none;';
-    //    container.style.cssText =unselect +  'position:absolute; left:0; right:0; top:0; bottom:0; color:#FFFFFF; font-size:10px; font-family:Consolas; pointer-events:none;  overflow:hidden; -webkit-font-smoothing: antialiased;';
-    //    var effect = '';//border:3px solid rgba(255,255,255,0.3);
-    //    var buttonStyle = effect+'width:30px; height:28px; position:relative; -webkit-border-radius: 20px; border-radius:20px; background-color: rgba(1,1,1,0.0); display:inline-block; text-align:center; cursor:pointer; pointer-events:auto; font-size:18px; ';
-    //    var bbStyle = 'width:130px; height:28px; position:relative; display:inline-block; text-decoration:none; font-size:14px; ';
-    //    var currentDemo = "";
-    //
-    //    var G = -10;
-    //    var drag;
-    //    //var finalFunction;
-    //
-    //    var loDiv = document.createElement( 'div' );
-    //    loDiv.style.cssText = effect+ 'position:absolute; left:10px; top:110px; width:30px; height:200px; padding:0 0 0 0; display:block; background:rgba(1,1,1,0.1); -webkit-border-radius:20px; border-radius:20px; cursor:ns-resize;text-align:center; pointer-events:auto;';
-    //    container.appendChild( loDiv );
-    //
-    //
-    //    var loDiv2 = document.createElement( 'div' );
-    //    loDiv2.style.cssText = 'position:absolute; left:5px; bottom:0px; width:20px; height:200px; display:block; background:rgba(255,255,0,0.05);-webkit-border-radius:10px; border-radius:10px; pointer-events:none;';
-    //    loDiv.appendChild( loDiv2 );
-    //
-    //
-    //    var center = document.createElement( 'div' );
-    //    center.style.cssText = 'position:absolute;width:30px;left:0px;height:1px;padding:0 0 0 0; background:rgba(255,255,255,0.2); top:100px; pointer-events:none;';
-    //    loDiv.appendChild( center );
-    //
-    //    var select = document.createElement( 'div' );
-    //    select.style.cssText = 'position:absolute;width:30px;left:0px;height:1px;padding:0 0 0 0; background:rgba(255,255,1,0.8); top:100px; pointer-events:none;';
-    //    loDiv.appendChild( select );
-
-    //    document.body.appendChild(container);
-    //
-    //    loDiv.addEventListener( 'mousedown', function(e){ drag = true; move(e); }, false );
-    //    loDiv.addEventListener( 'mouseout', function(e){ drag = false; }, false );
-    //    loDiv.addEventListener( 'mouseup', function(e){ drag = false; }, false );
-    //    loDiv.addEventListener( 'mousemove', function(e){ move(e); } , false );
-    //
-    //    var move =  function ( e ) {
-    //        var rect = loDiv.getBoundingClientRect();
-    //        var pos;
-    //        if(drag){
-    //            pos = parseInt(e.clientY-rect.top);
-    //            if(pos<0)pos=0;
-    //            if(pos>200)pos=200;
-    //            select.style.top = pos+"px";
-    //            loDiv2.style.height = 200-pos +"px";
-    //            G = -(pos-100)/10;
-    ////            txt.textContent =G;
-    ////            if(changeGravity)changeGravity(G);
-    //
-    //            if(pos<10 || pos>190){
-    //                select.style.width = '10px';
-    //                select.style.left = '10px';
-    //            }else{
-    //                select.style.width = '30px';
-    //                select.style.left = '0px';
-    //            }
-    //        }
-    //    };
-    //
-    //    var setCurrentGravity =  function ( g ) {
-    //        var rect = loDiv.getBoundingClientRect();
-    //        var pos = (((-g)*10)+100);
-    //
-    //        G = g;
-    //        txt.textContent = G;
-    //        select.style.top = pos +"px";
-    //        loDiv2.style.height = 200-pos +"px";
-    //
-    //        if(pos<10 || pos>190){
-    //            select.style.width = '10px';
-    //            select.style.left = '10px';
-    //        }else{
-    //            select.style.width = '30px';
-    //            select.style.left = '0px';
-    //        }
-    //    };
-    //
-    // setCurrentGravity(G);
 
     $(document).ready(function () {
 
-        var csvfile = "examples/output.csv";
-//			 var csvfile = "examples/2hoursBIG.csv";
-//        var csvfile = "examples/2hoursSmall.csv";
-
-        $.get(csvfile, function (file) {
-
-            Papa.parse(file, {
-                header: true,
-                dynamicTyping: true,
-                delimeter: ',',
-                quotes: true,
-                complete: function (results) {
-//						console.log(results);
-                    for (var i = 0; i < results.data.length; i++) {
-                        g.addCSVRow(results.data[i]);
-                    }
-
-                    initNodes();
-                    simulate = true;
-                }
-            });
-
-        });
+//        var csvfile = "examples/output.csv";
+//        $.get(csvfile, function (file) {
+//
+//            Papa.parse(file, {
+//                header: true,
+//                dynamicTyping: true,
+//                delimeter: ',',
+//                quotes: true,
+//                complete: function (results) {
+////						console.log(results);
+//                    for (var i = 0; i < results.data.length; i++) {
+//                        g.addCSVRow(results.data[i]);
+//                    }
+//
+        g.edges = cannedGraph.edges;
+        g.nodes = cannedGraph.nodes;
+        g.settings = cannedGraph.settings;
+//
+//        initNodes();
+//        simulate = true;
+//                }
+//            });
+//
+//        });
 
     });
 </script>

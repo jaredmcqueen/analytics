@@ -70,7 +70,7 @@ function generateIdMappings(inputArray, textureSize) {
 
     var texture = new THREE.DataTexture(textureArray, textureSize, textureSize, THREE.RGBAFormat, THREE.FloatType);
     texture.needsUpdate = true;
-    console.log('generateIdMappings', texture.image.data);
+    //console.log('generateIdMappings', texture.image.data);
     return texture;
 
 }

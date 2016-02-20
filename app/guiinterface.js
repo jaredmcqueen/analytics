@@ -47,31 +47,26 @@ function GUIInterface( simulator ) {
 		var container = document.createElement( 'div' );
 		container.id = 'layouts';
 
-		var forceDirected = document.createElement( 'button' );
+		var forceDirected = document.createElement( 'div' );
 		forceDirected.id = 'forceDirected';
-		$( forceDirected ).addClass( "btn btn-primary" );
-		$( forceDirected ).append( "<span class='glyphicon glyphicon-heart-empty' aria-hidden='true'></span>" );
+		$( forceDirected ).append( "<img src='textures/forceDirected.png' height='32px' width='32px'>" );
 
 
-		var circular = document.createElement( 'button' );
+		var circular = document.createElement( 'div' );
 		circular.id = 'circular';
-		$( circular ).addClass( "btn btn-primary" );
-		$( circular ).append( "<span class='glyphicon glyphicon-asterisk' aria-hidden='true'></span>" );
+		$( circular ).append( "<img src='textures/circle.png' height='32px' width='32px'>" );
 
-		var spherical = document.createElement( 'button' );
+		var spherical = document.createElement( 'div' );
 		spherical.id = 'spherical';
-		$( spherical ).addClass( "btn btn-primary" );
-		$( spherical ).append( "<span class='glyphicon glyphicon-ok-circle' aria-hidden='true'></span>" );
+		$( spherical ).append( "<img src='textures/sphere.png' height='32px' width='32px'>" );
 
-		var helix = document.createElement( 'helix' );
+		var helix = document.createElement( 'div' );
 		helix.id = 'helix';
-		$( helix ).addClass( "btn btn-primary" );
-		$( helix ).append( "<span class='glyphicon glyphicon-leaf' aria-hidden='true'></span>" );
+		$( helix ).append( "<img src='textures/spring.png' height='32px' width='32px'>" );
 
-		var grid = document.createElement( 'grid' );
+		var grid = document.createElement( 'div' );
 		grid.id = 'grid';
-		$( grid ).addClass( "btn btn-primary" );
-		$( grid ).append( "<span class='glyphicon glyphicon-sunglasses' aria-hidden='true'></span>" );
+		$( grid ).append( "<img src='textures/square.png' height='32px' width='32px'>" );
 
 
 		container.appendChild( forceDirected );

@@ -39,6 +39,8 @@ shaders = new ShaderLoader('./shaders');
 shaders.shaderSetLoaded = function () {
 	init();
 	animate();
+	        initNodes();
+        simulate = true;
 
 	//if (!_.isEmpty(g.nodes)) {
 	//	console.log('using generator');
@@ -58,15 +60,6 @@ shaders.load('sim-position', 'position', 'simulation');
 shaders.load('sim-nodeAttrib', 'nodeAttrib', 'simulation');
 shaders.load('vs-text', 'text', 'vertex');
 shaders.load('fs-text', 'text', 'fragment');
-
-
-function enableThreats(){
-
-	console.log('enabled');
-
-
-
-}
 
 
 function init() {
@@ -135,6 +128,7 @@ function init() {
 
 	slider = new Slider();
 	slider.init();
+
 
 	onWindowResize();
 	window.addEventListener('resize', onWindowResize, false);

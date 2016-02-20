@@ -60,15 +60,6 @@ shaders.load('vs-text', 'text', 'vertex');
 shaders.load('fs-text', 'text', 'fragment');
 
 
-function enableThreats(){
-
-	console.log('enabled');
-
-
-
-}
-
-
 function init() {
 
 	canvas = document.getElementById('c');

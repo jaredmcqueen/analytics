@@ -39,6 +39,8 @@ shaders = new ShaderLoader('./shaders');
 shaders.shaderSetLoaded = function () {
 	init();
 	animate();
+	        initNodes();
+        simulate = true;
 
 	//if (!_.isEmpty(g.nodes)) {
 	//	console.log('using generator');
@@ -126,6 +128,7 @@ function init() {
 
 	slider = new Slider();
 	slider.init();
+
 
 	onWindowResize();
 	window.addEventListener('resize', onWindowResize, false);

@@ -119,7 +119,7 @@ function Graph(settings) {
 
         var edgesArray = [];
 
-        $.each(nodes, function (key, value) {
+        $.each(this.nodes, function (key, value) {
 
             edgesArray[value.id] = _.uniq(value.edges);
 
@@ -138,7 +138,7 @@ function Graph(settings) {
 
         var i = 0;
 
-        $.each(nodes, function (key, value) {
+        $.each(this.nodes, function (key, value) {
 
 
             texStartX = (i % nodesWidth) / nodesWidth;
@@ -161,10 +161,11 @@ function Graph(settings) {
 
         var thing;
 
-        if (type == 'nodes') thing = nodes;
-        if (type == 'edges') thing = edges;
+        if (type == 'nodes') thing = this.nodes;
+        if (type == 'edges') thing = this.edges;
 
         var epochArray = [];
+
 
         $.each(thing, function (key, value) {
 

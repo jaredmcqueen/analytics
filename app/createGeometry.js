@@ -114,7 +114,7 @@ function createGeometry() {
 		v++;
 	});
 
-	console.log(nodeReferences.array);
+	//console.log(nodeReferences.array);
 
 	nodeUniforms = {
 

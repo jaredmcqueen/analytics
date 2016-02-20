@@ -113,7 +113,7 @@
     <script src="app/TextParticles.js"></script>
     <script src="app/guiinterface.js"></script>
 
-    <script src="examples/sampleData.json"></script>
+    <script src="examples/sampleData.js"></script>
 
 </head>
 
@@ -162,10 +162,12 @@
 //                        g.addCSVRow(results.data[i]);
 //                    }
 //
-                    console.log(g);
+        g.edges = cannedGraph.edges;
+        g.nodes = cannedGraph.nodes;
+        g.settings = cannedGraph.settings;
 //
-                    initNodes();
-                    simulate = true;
+//        initNodes();
+//        simulate = true;
 //                }
 //            });
 //

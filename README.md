@@ -1,6 +1,8 @@
 # MetaStack Analytics
 3D visualization engine for cyber security analysis
 
+**Elastic Kibana plugin and Splunk App coming soon!**
+
 
 [try it in your browser](http://metastackio.github.io/analytics/app.html)
 

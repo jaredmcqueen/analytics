@@ -3,6 +3,6 @@
 
 
 
-A WebGL experiment **write up coming soon!**
+![Image](./screenshots/forceDirected.png)
 
 **Copyright &copy; 2016 MetaStack Inc.**

@@ -78,6 +78,47 @@
             z-index: 1;
         }
 
+        .instruction {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            bottom: 20px;
+            padding-right: 20px;
+            padding-left: 20px;
+            pointer-events: none;
+
+            font-size: 16px;
+            color: #fff;
+            z-index: 2;
+        }
+
+        .footer {
+            position: absolute;
+            text-align: right;
+            left: 0;
+            width: 100%;
+            bottom: 20px;
+            padding-right: 20px;
+            padding-left: 20px;
+
+            font-size: 16px;
+            color: #999;
+            z-index: 2;
+        }
+
+        .footer a {
+            color: #bbb;
+        }
+
+        html.is-white .footer {
+            color: #000;
+        }
+
+        html.is-white .footer a {
+            color: #121212;
+        }
+
+
     </style>
 
 
@@ -141,6 +182,15 @@
 
     </div>
 
+</div>
+
+<div class="instruction">click nodes to see neighbors, double-click to clear</div>
+<div class="footer">
+    <span><a href="http://www.metastack.io" target="_blank">MetaStack</a></span>
+    <span>|</span>
+    <span><a href="https://github.com/metastackio/analytics" target="_blank">Github</a></span>
+    <span>|</span>
+    <span><a href="https://youtu.be/TM8B2GdWtiQ" target="_blank">Youtube</a></span>
 </div>
 
 

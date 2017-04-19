@@ -4,6 +4,8 @@
 [try it in your browser](http://jaredmcqueen.github.io/analytics/app.html)
 
 Notes:
+  * fruchterman reingold force-directed simulation, all performed on the GPU
+  * 60 FPS simulation for scenes with 1 million nodes
   * single-click on a node to see only it's neighbors
   * double click to clear selection
 

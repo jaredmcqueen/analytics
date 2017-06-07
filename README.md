@@ -12,3 +12,5 @@ Notes:
 click the force-direction graph icon a couple of times to speed up the particle simulation
 
 ![Image](./screenshots/forceDirected.png)
+![Image](./screenshots/circle.png)
+![Image](./screenshots/spiral.png)

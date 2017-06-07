@@ -1,4 +1,4 @@
-# MetaStack Analytics
+# GPU force directed graph using webgl
 3D visualization engine for cyber security analysis
 
 [try it in your browser](http://jaredmcqueen.github.io/analytics/app.html)

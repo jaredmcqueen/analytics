@@ -1,11 +1,16 @@
-# MetaStack Analytics
+# GPU force directed graph using webgl
 3D visualization engine for cyber security analysis
 
+[try it in your browser](http://jaredmcqueen.github.io/analytics/app.html)
 
-[try it in your browser](http://metastackio.github.io/analytics/app.html)
+Notes:
+  * fruchterman reingold force-directed simulation, all performed on the GPU
+  * 60 FPS simulation for scenes with 1 million nodes
+  * single-click on a node to see only it's neighbors
+  * double click to clear selection
 
-[watch 1 minute video demo on youtube](https://youtu.be/TM8B2GdWtiQ)
+click the force-direction graph icon a couple of times to speed up the particle simulation
 
 ![Image](./screenshots/forceDirected.png)
-
-**Copyright &copy; 2016 MetaStack Inc.**
+![Image](./screenshots/circle.png)
+![Image](./screenshots/spiral.png)
